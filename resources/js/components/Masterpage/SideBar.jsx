@@ -1,27 +1,25 @@
 import React, { useEffect, useState } from "react";
 import {
-    HomeModernIcon,
     HomeIcon,
     UsersIcon,
     BuildingOfficeIcon,
     IdentificationIcon,
     UserPlusIcon,
     MapPinIcon,
-    FingerPrintIcon,
     ArrowDownOnSquareStackIcon,
 } from "@heroicons/react/24/outline";
 import { NavLink } from "react-router-dom";
 
 export default function SideBar() {
     const [activeSidebar, setActiveSidebar] = useState(() => {
-        return localStorage.getItem("active-sidebar");
+        return localStorage.getItem("active-sidebar") || "dashboard";
     });
 
-    const ClickActiveSideBar = (value) => {
-        setActiveSidebar(value);
-        localStorage.setItem("active-sidebar", value);
-    };
-    const [pages, setPages] = useState([
+    useEffect(() => {
+        localStorage.setItem("active-sidebar", activeSidebar);
+    }, [activeSidebar]);
+
+    const pages = [
         {
             title: "General",
             children: [
@@ -29,67 +27,50 @@ export default function SideBar() {
                     title: "Dashboard",
                     to: "dashboard",
                     icon: HomeIcon,
-                    isLast: 0,
                 },
                 {
                     title: "Downline",
                     to: "downline",
                     icon: ArrowDownOnSquareStackIcon,
-                    isLast: 0,
                 },
                 {
                     title: "Leaders",
                     to: "leaders",
                     icon: ArrowDownOnSquareStackIcon,
-                    isLast: 0,
                 },
             ],
         },
-
         {
             title: "Settings",
             children: [
                 {
                     title: "Barangay",
-                    to: "settings-barangay",
+                    to: "settings/barangay",
                     icon: MapPinIcon,
-                    isLast: 0,
                 },
                 {
                     title: "Profile",
                     to: "settings-profile-list",
                     icon: UserPlusIcon,
-                    isLast: 0,
                 },
                 {
                     title: "Precinct",
                     to: "settings-precint",
                     icon: BuildingOfficeIcon,
-                    isLast: 0,
                 },
                 {
                     title: "Position",
                     to: "settings-position",
                     icon: IdentificationIcon,
-                    isLast: 0,
                 },
                 {
                     title: "User",
                     to: "settings-users",
                     icon: UsersIcon,
-                    isLast: 0,
                 },
             ],
         },
-    ]);
-
-    useEffect(() => {
-        const active = localStorage.getItem("active-sidebar");
-        active
-            ? localStorage.setItem("active-sidebar", active)
-            : localStorage.setItem("active-sidebar", "dashboard");
-        setActiveSidebar(active);
-    }, [activeSidebar]);
+    ];
 
     return (
         <div className="mt-14 h-screen w-full">
@@ -101,22 +82,21 @@ export default function SideBar() {
                                 {item.title}
                             </h2>
                             <div className="flex flex-col space-y-1">
-                                {item.children.map((item, index) => (
+                                {item.children.map((child, childIndex) => (
                                     <NavLink
-                                        to={item.to}
+                                        key={childIndex}
+                                        to={child.to}
                                         onClick={() =>
-                                            ClickActiveSideBar(item.to)
+                                            setActiveSidebar(child.to)
                                         }
-                                        key={index}
-                                        rel="noopener noreferrer"
-                                        href="#"
                                         className={`${
-                                            activeSidebar === item.to
+                                            activeSidebar === child.to
                                                 ? "text-teal-600 font-bold"
                                                 : "hover:font-bold hover:text-teal-600"
-                                        } `}
+                                        } flex items-center space-x-2`}
                                     >
-                                        {item.title}
+                                        <child.icon className="h-5 w-5" />
+                                        <span>{child.title}</span>
                                     </NavLink>
                                 ))}
                             </div>

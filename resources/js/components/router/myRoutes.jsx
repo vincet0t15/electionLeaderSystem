@@ -12,6 +12,8 @@ import Dashboard from "../Masterpage/Dashboard";
 // PROTECTED ROUTES
 import GuestRoute from "./GuestRoute";
 import PrivateRoute from "./ProtectedRoute";
+import Settings from "../Settings";
+import BarangayIndex from "../Settings/Barangay";
 
 export default function MyRoutes() {
     return (
@@ -24,6 +26,15 @@ export default function MyRoutes() {
                         element={<Navigate to="dashboard" />}
                     />
                     <Route exact path="dashboard" element={<Dashboard />} />
+
+                    <Route path="/settings/" element={<Settings />}>
+                        <Route
+                            exact
+                            path="/settings/"
+                            element={<Navigate to="barangay" />}
+                        />
+                        <Route path="barangay" element={<BarangayIndex />} />
+                    </Route>
                 </Route>
             </Route>
 
