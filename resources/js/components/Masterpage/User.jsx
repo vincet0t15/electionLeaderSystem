@@ -40,7 +40,7 @@ export default function UserSettings() {
                 />
             </MenuHandler>
             <MenuList>
-                <MenuItem className="flex items-center gap-2">
+                <MenuItem className="flex items-center gap-2 hover:bg-white">
                     <UserCircleIcon fill="none" className="w-5 h-5" />
                     <Typography variant="small" className="font-medium">
                         My Profile
