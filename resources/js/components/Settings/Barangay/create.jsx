@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import {
     Button,
     Dialog,
@@ -9,15 +9,30 @@ import {
     Input,
 } from "@material-tailwind/react";
 import apiClient from "../../../apiClient";
+import { postReducer, INITIAL_STATE } from "./Reducer/postReducer";
 
 export function BarangayCreate({ isOpen, isClose }) {
-    const [form, setForm] = useState({
-        barangay: "",
-    });
+    const [state, dispatch] = useReducer(postReducer, INITIAL_STATE);
 
+    const handleInputChange = (e) => {
+        dispatch({
+            type: "SET_FIELD",
+            field: e.target.name,
+            value: e.target.value,
+        });
+    };
     const storeBarangay = async () => {
-        const response = await apiClient.post("barangay", form);
-        console.log(response);
+        dispatch({ type: "SAVE_START" });
+        try {
+            const response = await apiClient.post("barangay");
+
+            dispatch({ type: "SAVE_SUCCESS", payload: response.data });
+        } catch (error) {
+            dispatch({
+                type: "SAVE_ERROR",
+                payload: error.message || "Error occurred",
+            });
+        }
     };
     return (
         <>
@@ -33,10 +48,13 @@ export function BarangayCreate({ isOpen, isClose }) {
                             color="blue-gray"
                             className="uppercase text-gray-700 font-semibold tracking-widest"
                         >
-                            Create Barangay
+                            Create Barangay{" "}
                         </Typography>
 
                         <Input
+                            onChange={handleInputChange}
+                            name="barangay"
+                            value={state.barangay || ""}
                             label="Barangay"
                             color="teal"
                             size="md"

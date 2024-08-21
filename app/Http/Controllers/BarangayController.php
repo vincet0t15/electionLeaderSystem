@@ -27,7 +27,10 @@ class BarangayController extends Controller
      */
     public function store(Request $request)
     {
-        return 1;
+        return [
+            'message' => 'Successfully added',
+            'status' => 'success'
+        ];
     }
 
     /**
