@@ -29,6 +29,7 @@ class BarangayController extends Controller
      */
     public function store(BarangayStoreRequest $request)
     {
+        return $request->all();
         $barangay =  new Barangay();
         $barangay->barangay = $request->barangay;
         $barangay->save();

@@ -14,7 +14,7 @@ export const postReducer = (state, action) => {
                 ...state,
                 form: {
                     ...state.form,
-                    [action.field]: action.value,
+                    [action.payload.name]: action.payload.value,
                 },
             };
         case ACTION_TYPES.SAVE_START:

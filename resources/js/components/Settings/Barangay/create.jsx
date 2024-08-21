@@ -17,8 +17,7 @@ export function BarangayCreate({ isOpen, isClose }) {
     const handleInputChange = (e) => {
         dispatch({
             type: ACTION_TYPES.SET_FIELD,
-            field: e.target.name,
-            value: e.target.value.toUpperCase(),
+            payload: { name: e.target.name, value: e.target.value },
         });
     };
 
@@ -62,7 +61,6 @@ export function BarangayCreate({ isOpen, isClose }) {
                             error={state.error.barangay ? true : false}
                             onChange={handleInputChange}
                             name="barangay"
-                            value={state.form.barangay || ""}
                             label="Barangay"
                             color="teal"
                             size="md"
