@@ -27,7 +27,7 @@ class BarangayController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return 1;
     }
 
     /**

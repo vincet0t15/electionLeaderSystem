@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Button,
     Dialog,
@@ -7,10 +7,18 @@ import {
     CardFooter,
     Typography,
     Input,
-    Checkbox,
 } from "@material-tailwind/react";
+import apiClient from "../../../apiClient";
 
 export function BarangayCreate({ isOpen, isClose }) {
+    const [form, setForm] = useState({
+        barangay: "",
+    });
+
+    const storeBarangay = async () => {
+        const response = await apiClient.post("barangay", form);
+        console.log(response);
+    };
     return (
         <>
             <Dialog
@@ -38,7 +46,7 @@ export function BarangayCreate({ isOpen, isClose }) {
                     <CardFooter className="pt-0">
                         <Button
                             color="teal"
-                            onClick={isClose}
+                            onClick={storeBarangay}
                             fullWidth
                             className="tracking-widest"
                         >
