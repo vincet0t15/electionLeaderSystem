@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BarangayRequest\BarangayStoreRequest;
+use App\Models\Barangay;
 use Illuminate\Http\Request;
 
 class BarangayController extends Controller
@@ -25,8 +27,12 @@ class BarangayController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BarangayStoreRequest $request)
     {
+        $barangay =  new Barangay();
+        $barangay->barangay = $request->barangay;
+        $barangay->save();
+
         return [
             'message' => 'Successfully added',
             'status' => 'success'

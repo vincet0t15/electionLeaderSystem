@@ -1,7 +1,7 @@
 import react, { act } from "react";
 import { ACTION_TYPES } from "../../../../actionType";
 export const INITIAL_STATE = {
-    barangay: null,
+    form: { barangay: null },
     saving: false,
     error: {},
     response: {},
@@ -12,7 +12,10 @@ export const postReducer = (state, action) => {
         case ACTION_TYPES.SET_FIELD:
             return {
                 ...state,
-                [action.field]: action.value,
+                form: {
+                    ...state.form,
+                    [action.field]: action.value,
+                },
             };
         case ACTION_TYPES.SAVE_START:
             return {
@@ -24,7 +27,7 @@ export const postReducer = (state, action) => {
                 ...state,
                 saving: false,
                 response: action.payload,
-                barangay: "",
+                form: { barangay: "" },
             };
         case ACTION_TYPES.FETCH_ERROR:
             return {

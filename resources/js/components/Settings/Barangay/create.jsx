@@ -18,15 +18,15 @@ export function BarangayCreate({ isOpen, isClose }) {
         dispatch({
             type: ACTION_TYPES.SET_FIELD,
             field: e.target.name,
-            value: e.target.value,
+            value: e.target.value.toUpperCase(),
         });
     };
     const storeBarangay = async () => {
         dispatch({ type: ACTION_TYPES.SAVE_START });
-        console.log(state.saving);
-        try {
-            const response = await apiClient.post("barangay");
 
+        try {
+            const response = await apiClient.post("barangay", state.form);
+            console.log(response);
             dispatch({
                 type: ACTION_TYPES.SAVE_SUCCESS,
                 payload: response.data,
@@ -54,13 +54,14 @@ export function BarangayCreate({ isOpen, isClose }) {
                             color="blue-gray"
                             className="uppercase text-gray-700 font-semibold tracking-widest"
                         >
-                            Create Barangay
+                            Create Barangay{JSON.stringify(state.error)}
                         </Typography>
 
                         <Input
+                            error={state.error.barangay ? true : false}
                             onChange={handleInputChange}
                             name="barangay"
-                            value={state.barangay || ""}
+                            value={state.form.barangay || ""}
                             label="Barangay"
                             color="teal"
                             size="md"
