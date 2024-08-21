@@ -31,11 +31,12 @@ export function BarangayCreate({ isOpen, isClose }) {
                 type: ACTION_TYPES.SAVE_SUCCESS,
                 payload: response.data,
             });
+
             isClose();
         } catch (error) {
             dispatch({
                 type: ACTION_TYPES.FETCH_ERROR,
-                payload: error.message || "Error occurred",
+                payload: error.response.data.errors,
             });
         }
     };
