@@ -3,6 +3,7 @@
 namespace App\Http\Requests\BarangayRequest;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class BarangayStoreRequest extends FormRequest
 {
@@ -22,7 +23,10 @@ class BarangayStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'barangay' => [
+                'required',
+                Rule::unique('barangays')->whereNull('deleted_at'),
+            ],
         ];
     }
 }
