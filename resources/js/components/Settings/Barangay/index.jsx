@@ -21,9 +21,9 @@ export default function BarangayIndex() {
                         type="button"
                         data-tab="order"
                         data-tab-page="active"
-                        className="bg-teal-400 text-sm font-medium text-white py-2 px-4 rounded-md w-24"
+                        className="bg-teal-400 text-sm font-medium text-white py-2 px-4 rounded-md w-24 tracking-wide"
                     >
-                        Add
+                        ADD
                     </button>
 
                     <div className="relative float-right w-full md:w-72 content-end">
