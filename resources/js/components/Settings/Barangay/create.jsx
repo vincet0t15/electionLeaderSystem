@@ -10,26 +10,31 @@ import {
 } from "@material-tailwind/react";
 import apiClient from "../../../apiClient";
 import { postReducer, INITIAL_STATE } from "./Reducer/postReducer";
-
+import { ACTION_TYPES } from "../../../actionType";
 export function BarangayCreate({ isOpen, isClose }) {
     const [state, dispatch] = useReducer(postReducer, INITIAL_STATE);
 
     const handleInputChange = (e) => {
         dispatch({
-            type: "SET_FIELD",
+            type: ACTION_TYPES.SET_FIELD,
             field: e.target.name,
             value: e.target.value,
         });
     };
     const storeBarangay = async () => {
-        dispatch({ type: "SAVE_START" });
+        dispatch({ type: ACTION_TYPES.SAVE_START });
+        console.log(state.saving);
         try {
             const response = await apiClient.post("barangay");
 
-            dispatch({ type: "SAVE_SUCCESS", payload: response.data });
+            dispatch({
+                type: ACTION_TYPES.SAVE_SUCCESS,
+                payload: response.data,
+            });
+            isClose();
         } catch (error) {
             dispatch({
-                type: "SAVE_ERROR",
+                type: ACTION_TYPES.FETCH_ERROR,
                 payload: error.message || "Error occurred",
             });
         }
@@ -48,7 +53,7 @@ export function BarangayCreate({ isOpen, isClose }) {
                             color="blue-gray"
                             className="uppercase text-gray-700 font-semibold tracking-widest"
                         >
-                            Create Barangay{" "}
+                            Create Barangay
                         </Typography>
 
                         <Input
@@ -63,10 +68,11 @@ export function BarangayCreate({ isOpen, isClose }) {
                     </CardBody>
                     <CardFooter className="pt-0">
                         <Button
+                            loading={state.saving}
                             color="teal"
                             onClick={storeBarangay}
                             fullWidth
-                            className="tracking-widest"
+                            className="tracking-widest justify-center items-center"
                         >
                             Create
                         </Button>
