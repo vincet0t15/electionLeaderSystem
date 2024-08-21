@@ -21,12 +21,13 @@ export function BarangayCreate({ isOpen, isClose }) {
             value: e.target.value.toUpperCase(),
         });
     };
+
     const storeBarangay = async () => {
         dispatch({ type: ACTION_TYPES.SAVE_START });
 
         try {
             const response = await apiClient.post("barangay", state.form);
-            console.log(response);
+
             dispatch({
                 type: ACTION_TYPES.SAVE_SUCCESS,
                 payload: response.data,
