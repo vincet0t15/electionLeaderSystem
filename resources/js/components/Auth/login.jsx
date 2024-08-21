@@ -146,6 +146,7 @@ export default function Login() {
                             </div>
                             <div className="mb-4 text-left">
                                 <Input
+                                    size="md"
                                     type="password"
                                     error={errors.password ? true : false}
                                     label="Password"

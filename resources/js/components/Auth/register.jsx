@@ -36,6 +36,7 @@ export default function Register() {
 
     const register = () => {
         setSaving(true);
+        console.log(formData);
         axios
             .post("/api/register", formData)
             .then((response) => {
@@ -56,7 +57,6 @@ export default function Register() {
             .catch((error) => {
                 setSaving(false);
                 setError(error.response.data.errors);
-                console.log(e);
             });
     };
 
@@ -119,6 +119,8 @@ export default function Register() {
                         <form className="mt-6 justify-center items-center">
                             <div className="mb-4">
                                 <Input
+                                    color="teal"
+                                    size="md"
                                     error={error.name ? true : false}
                                     label="Name"
                                     value={formData.name}
@@ -129,6 +131,8 @@ export default function Register() {
 
                             <div className="mb-4">
                                 <Input
+                                    color="teal"
+                                    size="md"
                                     error={error.username ? true : false}
                                     label="Username"
                                     value={formData.username}
@@ -138,6 +142,8 @@ export default function Register() {
                             </div>
                             <div className="mb-4">
                                 <Input
+                                    color="teal"
+                                    size="md"
                                     error={error.password ? true : false}
                                     type="password"
                                     label="Password"
@@ -158,6 +164,8 @@ export default function Register() {
                                     value={formData.password_confirmation}
                                     name="password_confirmation"
                                     onChange={handleChange}
+                                    color="teal"
+                                    size="md"
                                 />
                             </div>
                             <div className="text-center mt-2">

@@ -74,14 +74,14 @@ export default function SideBar() {
 
     return (
         <div className="mt-14 h-screen w-full">
-            <aside className="scrollbar-hide h-full w-full p-6 sm:w-60 dark:bg-gray-50 dark:text-gray-800 drop-shadow overflow-y-auto">
+            <aside className="scrollbar-hide h-full w-full p-6 sm:w-60 text-gray-800 drop-shadow overflow-y-auto">
                 <nav className="space-y-8 text-sm">
                     {pages.map((item, index) => (
                         <div className="space-y-2" key={index}>
-                            <h2 className="text-sm font-semibold tracking-widest uppercase dark:text-gray-600">
+                            <h2 className="text-sm font-semibold tracking-widest uppercase text-gray-700">
                                 {item.title}
                             </h2>
-                            <div className="flex flex-col space-y-1">
+                            <div className="flex flex-col space-y-1 text-gray-700 tracking-wide">
                                 {item.children.map((child, childIndex) => (
                                     <NavLink
                                         key={childIndex}

@@ -13,7 +13,7 @@ import {
     ArrowRightCircleIcon,
 } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
-
+import apiClient from "../../apiClient";
 export default function UserSettings() {
     const navigate = useNavigate();
     const logout = () => {
@@ -60,7 +60,7 @@ export default function UserSettings() {
                 </MenuItem>
 
                 <hr className="my-2 border-blue-gray-50" />
-                <MenuItem className="flex items-center gap-2">
+                <MenuItem className="flex items-center gap-2" onClick={logout}>
                     <ArrowRightCircleIcon className="w-6 h-6 text-red-500" />
                     <Typography
                         variant="small"

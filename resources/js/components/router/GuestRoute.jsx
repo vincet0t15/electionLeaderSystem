@@ -5,7 +5,7 @@ const GuestRoute = () => {
     const token = localStorage.getItem("e-listahan");
     let auth = { token: token };
 
-    return auth.token ? <Navigate to="/create-document" /> : <Outlet />;
+    return auth.token ? <Navigate to="/" /> : <Outlet />;
 };
 
 export default GuestRoute;
