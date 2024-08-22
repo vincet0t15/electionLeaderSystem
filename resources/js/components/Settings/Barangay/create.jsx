@@ -18,7 +18,10 @@ export function BarangayCreate({ isOpen, isClose, onSaved }) {
     const handleInputChange = (e) => {
         dispatch({
             type: ACTION_TYPES.SET_FIELD,
-            payload: { name: e.target.name, value: e.target.value },
+            payload: {
+                name: e.target.name,
+                value: e.target.value,
+            },
         });
     };
 
@@ -71,7 +74,7 @@ export function BarangayCreate({ isOpen, isClose, onSaved }) {
                             label="Barangay"
                             color="teal"
                             size="md"
-                            className="tracking-widest"
+                            className="tracking-widest uppercase"
                         />
                     </CardBody>
                     <CardFooter className="pt-0">

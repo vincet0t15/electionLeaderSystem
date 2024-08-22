@@ -93,7 +93,7 @@ export function BarangayEdit({ isOpen, isClose, onSaved, dataToEdit }) {
                                 label="Barangay"
                                 color="teal"
                                 size="md"
-                                className="tracking-widest"
+                                className="tracking-widest uppercase"
                             />
                             <span className="text-red-700 tracking-wide text-sm">
                                 {stateEdit.error.barangay}
