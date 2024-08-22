@@ -61,7 +61,7 @@ export function BarangayCreate({ isOpen, isClose, onSaved }) {
                             color="blue-gray"
                             className="uppercase text-gray-700 font-semibold tracking-widest"
                         >
-                            Create Barangay{JSON.stringify(state.error)}
+                            Create Barangay
                         </Typography>
 
                         <Input
