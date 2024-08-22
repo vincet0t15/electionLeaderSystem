@@ -4,6 +4,7 @@ import { BarangayCreate } from "./create";
 import { ACTION_TYPES } from "../../../actionType";
 import { barangayFetchReducer, INITIAL_STATE } from "./Reducer/fetchReducer";
 import apiClient from "../../../apiClient";
+import moment from "moment";
 export default function BarangayIndex() {
     const [createDialog, setCreateDialog] = useState(false);
     const [state, dispatch] = useReducer(barangayFetchReducer, INITIAL_STATE);
