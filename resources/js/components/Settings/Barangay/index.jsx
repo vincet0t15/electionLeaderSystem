@@ -122,6 +122,7 @@ export default function BarangayIndex() {
 
             {/* CREATE */}
             <BarangayCreate
+                onSaved={handleFetch}
                 isOpen={createDialog}
                 isClose={() => setCreateDialog(false)}
             />

@@ -11,7 +11,8 @@ import {
 import apiClient from "../../../apiClient";
 import { postReducer, INITIAL_STATE } from "./Reducer/postReducer";
 import { ACTION_TYPES } from "../../../actionType";
-export function BarangayCreate({ isOpen, isClose }) {
+import AlertMessage from "../../../Alert";
+export function BarangayCreate({ isOpen, isClose, onSaved }) {
     const [state, dispatch] = useReducer(postReducer, INITIAL_STATE);
 
     const handleInputChange = (e) => {
@@ -32,6 +33,7 @@ export function BarangayCreate({ isOpen, isClose }) {
                 payload: response.data,
             });
 
+            onSaved();
             isClose();
         } catch (error) {
             dispatch({
@@ -42,6 +44,11 @@ export function BarangayCreate({ isOpen, isClose }) {
     };
     return (
         <>
+            <AlertMessage
+                ALertData={state.alertData}
+                isCLose={() => dispatch({ type: ACTION_TYPES.CLEAR_ALERT })}
+            />
+
             <Dialog
                 size="xs"
                 open={isOpen}

@@ -5,6 +5,11 @@ export const INITIAL_STATE = {
     saving: false,
     error: {},
     response: {},
+    alertData: {
+        isShow: false,
+        message: "",
+        status: "",
+    },
 };
 
 export const postReducer = (state, action) => {
@@ -28,12 +33,26 @@ export const postReducer = (state, action) => {
                 saving: false,
                 response: action.payload,
                 form: { barangay: "" },
+                alertData: {
+                    isShow: true,
+                    message: action.payload.message,
+                    status: action.payload.status,
+                },
             };
         case ACTION_TYPES.FETCH_ERROR:
             return {
                 ...state,
                 saving: false,
                 error: action.payload,
+            };
+        case ACTION_TYPES.CLEAR_ALERT:
+            return {
+                ...state,
+                alertData: {
+                    isShow: false,
+                    message: "",
+                    status: "",
+                },
             };
         default:
             return state;
