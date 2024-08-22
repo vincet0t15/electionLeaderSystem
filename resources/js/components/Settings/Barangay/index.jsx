@@ -1,4 +1,8 @@
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import {
+    MagnifyingGlassIcon,
+    PencilIcon,
+    TrashIcon,
+} from "@heroicons/react/24/outline";
 import React, { useEffect, useReducer, useState } from "react";
 import { BarangayCreate } from "./create";
 import { ACTION_TYPES } from "../../../actionType";
@@ -108,9 +112,12 @@ export default function BarangayIndex() {
                                             )}
                                         </span>
                                     </td>
-                                    <td className="py-2 px-4 border-b border-b-gray-50">
-                                        <span className="inline-block p-1 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[12px] leading-none">
-                                            In progress
+                                    <td className="flex py-2 px-4 border-b border-b-gray-50">
+                                        <span className="hover:cursor-pointer text-teal-500 inline-block p-1 tracking-wide rounded bg-emerald-500/10 text-emerald-500 font-medium text-[13px] leading-none">
+                                            Edit
+                                        </span>
+                                        <span className="hover:cursor-pointer text-red-500 inline-block p-1 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[13px] leading-none">
+                                            Delete
                                         </span>
                                     </td>
                                 </tr>
