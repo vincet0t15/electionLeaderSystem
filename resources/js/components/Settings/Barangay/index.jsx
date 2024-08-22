@@ -1,13 +1,10 @@
-import {
-    MagnifyingGlassIcon,
-    PencilIcon,
-    TrashIcon,
-} from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useReducer, useState } from "react";
 import { BarangayCreate } from "./create";
 import { ACTION_TYPES } from "../../../actionType";
 import { barangayFetchReducer, INITIAL_STATE } from "./Reducer/fetchReducer";
 import apiClient from "../../../apiClient";
+
 import moment from "moment";
 export default function BarangayIndex() {
     const [createDialog, setCreateDialog] = useState(false);
