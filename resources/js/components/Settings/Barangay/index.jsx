@@ -7,6 +7,7 @@ import apiClient from "../../../apiClient";
 
 import moment from "moment";
 import { BarangayEdit } from "./edit";
+import { Spinner } from "@material-tailwind/react";
 export default function BarangayIndex() {
     const [state, dispatch] = useReducer(barangayFetchReducer, INITIAL_STATE);
 
@@ -90,37 +91,50 @@ export default function BarangayIndex() {
                             </tr>
                         </thead>
                         <tbody>
-                            {state.barangay.data.map((data, index) => (
-                                <tr key={index}>
-                                    <td className="py-2 px-4 border-b border-b-gray-50">
-                                        <div className="flex items-center">
-                                            <span className="text-[13px] font-medium text-gray-700 uppercase">
-                                                {data.barangay}
+                            {state.loading ? (
+                                <tr className="items-center justify-center text-center">
+                                    <td colSpan={5}>
+                                        <div className="border-b flex items-center justify-center text-center p-2">
+                                            <Spinner color="teal" />
+                                            <span className="pl-3">
+                                                Loading data please wait...{" "}
                                             </span>
                                         </div>
                                     </td>
-                                    <td className="py-2 px-4 border-b border-b-gray-50">
-                                        <span className="text-[13px] font-medium text-gray-700 tracking-wide uppercase">
-                                            {data.user.name}
-                                        </span>
-                                    </td>
-                                    <td className="py-2 px-4 border-b border-b-gray-50">
-                                        <span className="text-[13px] font-medium text-gray-700 tracking-wide uppercase">
-                                            {moment(data.date_created).format(
-                                                "LL"
-                                            )}
-                                        </span>
-                                    </td>
-                                    <td className="flex py-2 px-4 border-b border-b-gray-50">
-                                        <span className="hover:cursor-pointer text-teal-500 inline-block p-1 tracking-wide rounded bg-emerald-500/10 text-emerald-500 font-medium text-[13px] leading-none">
-                                            Edit
-                                        </span>
-                                        <span className="hover:cursor-pointer text-red-500 inline-block p-1 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[13px] leading-none">
-                                            Delete
-                                        </span>
-                                    </td>
                                 </tr>
-                            ))}
+                            ) : (
+                                state.barangay.data.map((data, index) => (
+                                    <tr key={index}>
+                                        <td className="py-2 px-4 border-b border-b-gray-50">
+                                            <div className="flex items-center">
+                                                <span className="text-[13px] font-medium text-gray-700 uppercase">
+                                                    {data.barangay}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td className="py-2 px-4 border-b border-b-gray-50">
+                                            <span className="text-[13px] font-medium text-gray-700 tracking-wide uppercase">
+                                                {data.user.name}
+                                            </span>
+                                        </td>
+                                        <td className="py-2 px-4 border-b border-b-gray-50">
+                                            <span className="text-[13px] font-medium text-gray-700 tracking-wide uppercase">
+                                                {moment(
+                                                    data.date_created
+                                                ).format("LL")}
+                                            </span>
+                                        </td>
+                                        <td className="flex py-2 px-4 border-b border-b-gray-50">
+                                            <span className="hover:cursor-pointer text-teal-500 inline-block p-1 tracking-wide rounded bg-emerald-500/10 text-emerald-500 font-medium text-[13px] leading-none">
+                                                Edit
+                                            </span>
+                                            <span className="hover:cursor-pointer text-red-500 inline-block p-1 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[13px] leading-none">
+                                                Delete
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </table>
                 </div>
