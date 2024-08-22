@@ -14,7 +14,11 @@ class BarangayController extends Controller
      */
     public function index()
     {
-        return Barangay::with('user')
+        return request('search');
+        return Barangay::when(request('search'), function ($query) {
+            $query->where('barangay', 'like', '%' . request('search') . '%');
+        })
+            ->with('user')
             ->paginate(10);
     }
 

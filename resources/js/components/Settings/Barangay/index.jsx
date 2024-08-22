@@ -18,10 +18,14 @@ export default function BarangayIndex() {
     );
 
     const handleFetch = async () => {
+        console.log(state.search);
         dispatch({ type: ACTION_TYPES.FETCH_START });
 
         try {
-            const response = await apiClient.get("barangay");
+            const response = await apiClient.get(
+                "barangay?search=" + state.search
+            );
+
             dispatch({
                 type: ACTION_TYPES.FETCH_SUCCESS,
                 payload: response.data,
@@ -49,13 +53,17 @@ export default function BarangayIndex() {
 
     const handleSearchKeyDown = (e) => {
         if (e.key === "Enter") {
-            handleFetch();
+            handleFetch(state.search);
         }
     };
 
-    const handleSearchInputChange = () => {
-        //
+    const handleSearchInputChange = (e) => {
+        dispatch({
+            type: ACTION_TYPES.SET_SEARCH,
+            payload: { name: e.target.name, value: e.target.value },
+        });
     };
+
     return (
         <div>
             <div className="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md">
@@ -79,12 +87,14 @@ export default function BarangayIndex() {
 
                     <div className="relative float-right w-full md:w-72 content-end">
                         <input
+                            name="search"
                             onChange={handleSearchInputChange}
                             onKeyDown={handleSearchKeyDown}
                             type="text"
                             className="py-2 pr-4 pl-10 bg-gray-50 w-full text-gray-500 outline-none border border-gray-600 rounded-md text-sm focus:border-teal-500"
                             placeholder="Search..."
                         />
+
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <MagnifyingGlassIcon className="w-5 h-5 text-gray-500" />
                         </div>
