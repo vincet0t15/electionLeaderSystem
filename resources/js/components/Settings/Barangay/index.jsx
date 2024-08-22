@@ -47,6 +47,15 @@ export default function BarangayIndex() {
         dispatchEdit({ type: "EDIT_DIALOG_OPEN" });
     };
 
+    const handleSearchKeyDown = (e) => {
+        if (e.key === "Enter") {
+            handleFetch();
+        }
+    };
+
+    const handleSearchInputChange = () => {
+        //
+    };
     return (
         <div>
             <div className="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md">
@@ -70,6 +79,8 @@ export default function BarangayIndex() {
 
                     <div className="relative float-right w-full md:w-72 content-end">
                         <input
+                            onChange={handleSearchInputChange}
+                            onKeyDown={handleSearchKeyDown}
                             type="text"
                             className="py-2 pr-4 pl-10 bg-gray-50 w-full text-gray-500 outline-none border border-gray-600 rounded-md text-sm focus:border-teal-500"
                             placeholder="Search..."
