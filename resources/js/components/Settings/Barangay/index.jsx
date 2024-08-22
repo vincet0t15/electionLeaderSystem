@@ -9,14 +9,22 @@ import moment from "moment";
 import { BarangayEdit } from "./edit";
 import { Spinner } from "@material-tailwind/react";
 import { EDIT_BARANGAY_ACTION_TYPES } from "./editBarangayActionType";
-
+import { DELETE_BARANGAY_ACTION_TYPES } from "./deleteBarangayActionType";
+import {
+    barangayDeleteReducer,
+    INITIAL_STATE_DELETE,
+} from "./Reducer/deleteReducer";
+import BarangayDelete from "./delete";
 export default function BarangayIndex() {
     const [state, dispatch] = useReducer(barangayFetchReducer, INITIAL_STATE);
     const [stateEdit, dispatchEdit] = useReducer(
         barangayEditReducer,
         INITIAL_STATE_EDIT
     );
-
+    const [stateDelete, dispatchDelete] = useReducer(
+        barangayDeleteReducer,
+        INITIAL_STATE_DELETE
+    );
     const handleFetch = async () => {
         dispatch({ type: ACTION_TYPES.FETCH_START });
 
@@ -47,7 +55,6 @@ export default function BarangayIndex() {
 
     const handleClickEdit = (data) => {
         dispatchEdit({ type: "LOAD_DATA_TO_EDIT", payload: data });
-        dispatchEdit({ type: "EDIT_DIALOG_OPEN" });
     };
 
     const handleSearchKeyDown = (e) => {
@@ -63,6 +70,15 @@ export default function BarangayIndex() {
         });
     };
 
+    const handleClickDelete = (data) => {
+        dispatchDelete({
+            type: DELETE_BARANGAY_ACTION_TYPES.DATA_TO_DELETE,
+            payload: data,
+        });
+        dispatchDelete({
+            type: DELETE_BARANGAY_ACTION_TYPES.DELETE_DIALOG_OPEN,
+        });
+    };
     return (
         <div>
             <div className="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md">
@@ -166,7 +182,12 @@ export default function BarangayIndex() {
                                             >
                                                 Edit
                                             </span>
-                                            <span className="hover:cursor-pointer text-red-500 inline-block p-1 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[13px] leading-none">
+                                            <span
+                                                onClick={() =>
+                                                    handleClickDelete(data)
+                                                }
+                                                className="hover:cursor-pointer text-red-500 inline-block p-1 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[13px] leading-none"
+                                            >
                                                 Delete
                                             </span>
                                         </td>
@@ -198,6 +219,17 @@ export default function BarangayIndex() {
                     })
                 }
                 dataToEdit={stateEdit.form}
+            />
+
+            {/* DELETE */}
+            <BarangayDelete
+                dataToDelete={stateDelete.form}
+                isOpen={stateDelete.deleteDialog}
+                isClose={() =>
+                    dispatchDelete({
+                        type: DELETE_BARANGAY_ACTION_TYPES.DELETE_DIALOG_CLOSE,
+                    })
+                }
             />
         </div>
     );
