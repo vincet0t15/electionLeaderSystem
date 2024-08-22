@@ -15,7 +15,17 @@ import {
     INITIAL_STATE_DELETE,
 } from "./Reducer/deleteReducer";
 import BarangayDelete from "./delete";
+import PaginatedItems from "../../Pagination/Pagination";
 export default function BarangayIndex() {
+    // pagination
+    const [pages, setPages] = useState({
+        total_items: 0,
+        per_page: 0,
+        current_total: 0,
+    });
+    const [selectedPage, setSelectedPage] = useState(1);
+    // pagination
+
     const [state, dispatch] = useReducer(barangayFetchReducer, INITIAL_STATE);
     const [stateEdit, dispatchEdit] = useReducer(
         barangayEditReducer,
@@ -30,13 +40,24 @@ export default function BarangayIndex() {
 
         try {
             const response = await apiClient.get(
-                "barangay?search=" + state.search
+                "barangay?search=" + state.search + "&page=" + selectedPage
             );
 
             dispatch({
                 type: ACTION_TYPES.FETCH_SUCCESS,
                 payload: response.data,
             });
+
+            setPages({
+                total_items: response.data.total,
+                per_page: response.data.per_page,
+                current_total: response.data.to,
+            });
+
+            if (selectedPage > response.data.last_page) {
+                setSelectedPage(response.data.last_page);
+                return;
+            }
         } catch (error) {
             dispatch({
                 type: ACTION_TYPES.FETCH_ERROR,
@@ -47,7 +68,7 @@ export default function BarangayIndex() {
 
     useEffect(() => {
         handleFetch();
-    }, []);
+    }, [selectedPage]);
 
     const handleClickAdd = () => {
         dispatch({ type: ACTION_TYPES.CREATE_DIALOG });
@@ -196,6 +217,14 @@ export default function BarangayIndex() {
                             )}
                         </tbody>
                     </table>
+                    <div className="flex items-center justify-between border-t border-blue-gray-50 p-4">
+                        <PaginatedItems
+                            currentTotal={pages.current_total}
+                            itemsPerPage={pages.per_page || 1}
+                            totalItems={pages.total_items || 0}
+                            selectedPage={setSelectedPage}
+                        />
+                    </div>
                 </div>
                 {/* TABLE */}
             </div>
