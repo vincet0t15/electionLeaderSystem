@@ -13,7 +13,8 @@ class BarangayController extends Controller
      */
     public function index()
     {
-        return Barangay::paginate(10);
+        return Barangay::with('user')
+            ->paginate(10);
     }
 
     /**

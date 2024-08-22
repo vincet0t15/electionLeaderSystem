@@ -72,16 +72,16 @@ export default function BarangayIndex() {
                         <thead>
                             <tr>
                                 <th className="text-[12px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-gray-50 text-left rounded-tl-md rounded-bl-md">
-                                    Service
+                                    BARANGAY
                                 </th>
                                 <th className="text-[12px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-gray-50 text-left">
-                                    Estimate
+                                    CREATED BY
                                 </th>
                                 <th className="text-[12px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-gray-50 text-left">
-                                    Budget
+                                    DATE CREATED
                                 </th>
                                 <th className="text-[12px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-gray-50 text-left rounded-tr-md rounded-br-md">
-                                    Status
+                                    ACTION
                                 </th>
                             </tr>
                         </thead>
@@ -90,22 +90,19 @@ export default function BarangayIndex() {
                                 <tr key={index}>
                                     <td className="py-2 px-4 border-b border-b-gray-50">
                                         <div className="flex items-center">
-                                            <a
-                                                href="#"
-                                                className="text-gray-600 text-sm font-medium hover:text-teal-500 ml-2 truncate"
-                                            >
+                                            <span className="text-[13px] font-medium text-gray-700">
                                                 {data.barangay}
-                                            </a>
+                                            </span>
                                         </div>
                                     </td>
                                     <td className="py-2 px-4 border-b border-b-gray-50">
-                                        <span className="text-[13px] font-medium text-gray-400">
-                                            3 days
+                                        <span className="text-[13px] font-medium text-gray-700 tracking-wide">
+                                            {data.user.name}
                                         </span>
                                     </td>
                                     <td className="py-2 px-4 border-b border-b-gray-50">
-                                        <span className="text-[13px] font-medium text-gray-400">
-                                            $56
+                                        <span className="text-[13px] font-medium text-gray-700 tracking-wide">
+                                            {data.date_created}
                                         </span>
                                     </td>
                                     <td className="py-2 px-4 border-b border-b-gray-50">
