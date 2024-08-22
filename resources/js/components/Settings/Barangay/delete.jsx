@@ -3,11 +3,9 @@ import apiClient from "../../../apiClient";
 import {
     Button,
     Dialog,
-    DialogHeader,
     DialogBody,
     DialogFooter,
     Typography,
-    Spinner,
 } from "@material-tailwind/react";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { DELETE_BARANGAY_ACTION_TYPES } from "./deleteBarangayActionType";
@@ -15,18 +13,33 @@ import {
     barangayDeleteReducer,
     INITIAL_STATE_DELETE,
 } from "./Reducer/deleteReducer";
+import AlertMessage from "../../../Alert";
 export default function BarangayDelete({
     isOpen,
     isClose,
-    onDelete,
+    onDeleted,
     dataToDelete,
 }) {
     const [stateDelete, dispatchDelete] = useReducer(
         barangayDeleteReducer,
         INITIAL_STATE_DELETE
     );
-    const handleDelete = () => {
-        console.log(stateDelete.form);
+    const handleDelete = async () => {
+        dispatchDelete({ type: DELETE_BARANGAY_ACTION_TYPES.DELETE_START });
+        try {
+            const response = await apiClient.delete(
+                "barangay/" + stateDelete.form.id
+            );
+            console.log(response);
+            dispatchDelete({
+                type: DELETE_BARANGAY_ACTION_TYPES.DELETE_SUCCESS,
+                payload: response.data,
+            });
+            onDeleted();
+            isClose();
+        } catch (error) {
+            //
+        }
     };
 
     useEffect(() => {
@@ -38,12 +51,14 @@ export default function BarangayDelete({
     return (
         <div>
             {/* MESSAGE ALERT */}
-            {/* <AlertMessage
-                ALertData={alertData}
-                isCLose={() =>
-                    setAlertData({ isShow: false, message: "", status: "" })
+            <AlertMessage
+                alertData={stateDelete.alertData}
+                isClose={() =>
+                    dispatchDelete({
+                        type: DELETE_BARANGAY_ACTION_TYPES.CLEAR_ALERT,
+                    })
                 }
-            /> */}
+            />
 
             {/* DELETE DIALOG */}
             <Dialog open={isOpen} size="xs" handler={isClose}>
@@ -78,7 +93,11 @@ export default function BarangayDelete({
                         Close
                     </Button>
 
-                    <Button color="green" onClick={handleDelete}>
+                    <Button
+                        loading={stateDelete.deleting}
+                        color="green"
+                        onClick={handleDelete}
+                    >
                         delete
                     </Button>
                 </DialogFooter>

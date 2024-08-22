@@ -7,10 +7,20 @@ export const INITIAL_STATE_DELETE = {
         id: "",
         barangay: "",
     },
+    alertData: {
+        isShow: false,
+        message: "",
+        status: "",
+    },
 };
 
 export const barangayDeleteReducer = (state, action) => {
     switch (action.type) {
+        case DELETE_BARANGAY_ACTION_TYPES.DELETE_START:
+            return {
+                ...state,
+                deleting: true,
+            };
         case DELETE_BARANGAY_ACTION_TYPES.DELETE_DIALOG_OPEN:
             return {
                 ...state,
@@ -29,6 +39,25 @@ export const barangayDeleteReducer = (state, action) => {
                     barangay: action.payload.barangay,
                 },
                 editDialog: true,
+            };
+        case DELETE_BARANGAY_ACTION_TYPES.DELETE_SUCCESS:
+            return {
+                ...state,
+                deleting: false,
+                alertData: {
+                    isShow: true,
+                    message: action.payload.message,
+                    status: action.payload.status,
+                },
+            };
+        case DELETE_BARANGAY_ACTION_TYPES.CLEAR_ALERT:
+            return {
+                ...state,
+                alertData: {
+                    isShow: false,
+                    message: "",
+                    status: "",
+                },
             };
         default:
             return state;

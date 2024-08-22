@@ -223,6 +223,7 @@ export default function BarangayIndex() {
 
             {/* DELETE */}
             <BarangayDelete
+                onDeleted={handleFetch}
                 dataToDelete={stateDelete.form}
                 isOpen={stateDelete.deleteDialog}
                 isClose={() =>

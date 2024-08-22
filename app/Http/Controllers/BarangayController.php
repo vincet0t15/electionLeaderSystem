@@ -83,6 +83,12 @@ class BarangayController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $barangay = Barangay::find($id);
+        $barangay->delete();
+
+        return [
+            'message' => 'Successfully deleted',
+            'status' => 'success'
+        ];
     }
 }
