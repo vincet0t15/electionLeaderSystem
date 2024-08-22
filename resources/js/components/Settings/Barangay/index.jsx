@@ -32,9 +32,7 @@ export default function BarangayIndex() {
     }, []);
 
     const handleClickAdd = () => {
-        console.log(1);
         dispatch({ type: ACTION_TYPES.CREATE_DIALOG });
-        console.log(state.createDialog);
     };
     return (
         <div>
@@ -132,7 +130,9 @@ export default function BarangayIndex() {
             <BarangayCreate
                 onSaved={handleFetch}
                 isOpen={state.createDialog}
-                // isClose={() => setCreateDialog(false)}
+                isClose={() =>
+                    dispatch({ type: ACTION_TYPES.CREATE_DIALOG_CLOSE })
+                }
             />
 
             {/* EDIT */}
