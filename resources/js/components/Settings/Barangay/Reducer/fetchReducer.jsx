@@ -5,7 +5,7 @@ export const INITIAL_STATE = {
     laoding: false,
     error: {},
     createDialog: false,
-    search: null,
+    search: "",
 };
 
 export const barangayFetchReducer = (state, action) => {
@@ -44,7 +44,7 @@ export const barangayFetchReducer = (state, action) => {
         case ACTION_TYPES.SET_SEARCH:
             return {
                 ...state,
-                search: action.payload,
+                search: action.payload.value,
             };
         default:
             return state;

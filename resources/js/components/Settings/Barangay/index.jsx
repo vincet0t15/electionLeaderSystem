@@ -18,7 +18,6 @@ export default function BarangayIndex() {
     );
 
     const handleFetch = async () => {
-        console.log(state.search);
         dispatch({ type: ACTION_TYPES.FETCH_START });
 
         try {
@@ -53,7 +52,7 @@ export default function BarangayIndex() {
 
     const handleSearchKeyDown = (e) => {
         if (e.key === "Enter") {
-            handleFetch(state.search);
+            handleFetch();
         }
     };
 
