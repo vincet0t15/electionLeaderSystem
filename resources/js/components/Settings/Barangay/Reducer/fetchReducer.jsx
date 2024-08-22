@@ -4,6 +4,7 @@ export const INITIAL_STATE = {
     barangay: { data: [] },
     laoding: false,
     error: {},
+    createDialog: false,
 };
 
 export const barangayFetchReducer = (state, action) => {
@@ -25,6 +26,11 @@ export const barangayFetchReducer = (state, action) => {
                 error: action.payload,
                 loading: false,
                 barangay: { data: [] },
+            };
+        case ACTION_TYPES.CREATE_DIALOG:
+            return {
+                ...state,
+                createDialog: true,
             };
         default:
             return state;

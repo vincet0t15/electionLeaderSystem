@@ -6,8 +6,8 @@ import { barangayFetchReducer, INITIAL_STATE } from "./Reducer/fetchReducer";
 import apiClient from "../../../apiClient";
 
 import moment from "moment";
+import { BarangayEdit } from "./edit";
 export default function BarangayIndex() {
-    const [createDialog, setCreateDialog] = useState(false);
     const [state, dispatch] = useReducer(barangayFetchReducer, INITIAL_STATE);
 
     const handleFetch = async () => {
@@ -19,8 +19,6 @@ export default function BarangayIndex() {
                 type: ACTION_TYPES.FETCH_SUCCESS,
                 payload: response.data,
             });
-            console.log(state);
-            console.log(response.data);
         } catch (error) {
             dispatch({
                 type: ACTION_TYPES.FETCH_ERROR,
@@ -32,6 +30,12 @@ export default function BarangayIndex() {
     useEffect(() => {
         handleFetch();
     }, []);
+
+    const handleClickAdd = () => {
+        console.log(1);
+        dispatch({ type: ACTION_TYPES.CREATE_DIALOG });
+        console.log(state.createDialog);
+    };
     return (
         <div>
             <div className="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md">
@@ -44,7 +48,7 @@ export default function BarangayIndex() {
                 {/* BUTTON AND SEARCH */}
                 <div className="flex flex-col md:flex-row mb-4 justify-between gap-2">
                     <button
-                        onClick={() => setCreateDialog(true)}
+                        onClick={handleClickAdd}
                         type="button"
                         data-tab="order"
                         data-tab-page="active"
@@ -127,9 +131,12 @@ export default function BarangayIndex() {
             {/* CREATE */}
             <BarangayCreate
                 onSaved={handleFetch}
-                isOpen={createDialog}
-                isClose={() => setCreateDialog(false)}
+                isOpen={state.createDialog}
+                // isClose={() => setCreateDialog(false)}
             />
+
+            {/* EDIT */}
+            {/* <BarangayEdit /> */}
         </div>
     );
 }
