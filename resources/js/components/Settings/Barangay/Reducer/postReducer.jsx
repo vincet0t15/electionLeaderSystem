@@ -1,4 +1,3 @@
-import react, { act } from "react";
 import { ACTION_TYPES } from "../../../../actionType";
 export const INITIAL_STATE = {
     form: { barangay: null },
