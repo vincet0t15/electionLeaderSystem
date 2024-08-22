@@ -1,10 +1,35 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import React, { useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { BarangayCreate } from "./create";
-
+import { ACTION_TYPES } from "../../../actionType";
+import { barangayFetchReducer, INITIAL_STATE } from "./Reducer/fetchReducer";
+import apiClient from "../../../apiClient";
 export default function BarangayIndex() {
     const [createDialog, setCreateDialog] = useState(false);
+    const [state, dispatch] = useReducer(barangayFetchReducer, INITIAL_STATE);
 
+    const handleFetch = async () => {
+        dispatch({ type: ACTION_TYPES.FETCH_START });
+
+        try {
+            const response = await apiClient.get("barangay");
+            dispatch({
+                type: ACTION_TYPES.FETCH_SUCCESS,
+                payload: response.data,
+            });
+            console.log(state);
+            console.log(response.data);
+        } catch (error) {
+            dispatch({
+                type: ACTION_TYPES.FETCH_ERROR,
+                payload: error.response.data.errors,
+            });
+        }
+    };
+
+    useEffect(() => {
+        handleFetch();
+    }, []);
     return (
         <div>
             <div className="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md">
@@ -61,34 +86,35 @@ export default function BarangayIndex() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <div className="flex items-center">
-                                        {/* <img src="https://placehold.co/32x32" alt="" className="w-8 h-8 rounded object-cover block"> */}
-                                        <a
-                                            href="#"
-                                            className="text-gray-600 text-sm font-medium hover:text-teal-500 ml-2 truncate"
-                                        >
-                                            Create landing page
-                                        </a>
-                                    </div>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        3 days
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        $56
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="inline-block p-1 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[12px] leading-none">
-                                        In progress
-                                    </span>
-                                </td>
-                            </tr>
+                            {state.barangay.data.map((data, index) => (
+                                <tr key={index}>
+                                    <td className="py-2 px-4 border-b border-b-gray-50">
+                                        <div className="flex items-center">
+                                            <a
+                                                href="#"
+                                                className="text-gray-600 text-sm font-medium hover:text-teal-500 ml-2 truncate"
+                                            >
+                                                {data.barangay}
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td className="py-2 px-4 border-b border-b-gray-50">
+                                        <span className="text-[13px] font-medium text-gray-400">
+                                            3 days
+                                        </span>
+                                    </td>
+                                    <td className="py-2 px-4 border-b border-b-gray-50">
+                                        <span className="text-[13px] font-medium text-gray-400">
+                                            $56
+                                        </span>
+                                    </td>
+                                    <td className="py-2 px-4 border-b border-b-gray-50">
+                                        <span className="inline-block p-1 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[12px] leading-none">
+                                            In progress
+                                        </span>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>
