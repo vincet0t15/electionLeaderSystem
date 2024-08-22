@@ -3,14 +3,17 @@ import React, { useEffect, useReducer, useState } from "react";
 import { BarangayCreate } from "./create";
 import { ACTION_TYPES } from "../../../actionType";
 import { barangayFetchReducer, INITIAL_STATE } from "./Reducer/fetchReducer";
+import { barangayEditReducer, INITIAL_STATE_EDIT } from "./Reducer/editReducer";
 import apiClient from "../../../apiClient";
-
 import moment from "moment";
 import { BarangayEdit } from "./edit";
 import { Spinner } from "@material-tailwind/react";
 export default function BarangayIndex() {
     const [state, dispatch] = useReducer(barangayFetchReducer, INITIAL_STATE);
-
+    const [stateEdit, dispatchEdit] = useReducer(
+        barangayEditReducer,
+        INITIAL_STATE_EDIT
+    );
     const handleFetch = async () => {
         dispatch({ type: ACTION_TYPES.FETCH_START });
 
@@ -34,6 +37,11 @@ export default function BarangayIndex() {
 
     const handleClickAdd = () => {
         dispatch({ type: ACTION_TYPES.CREATE_DIALOG });
+    };
+
+    const handleClickEdit = () => {
+        dispatchEdit({ type: ACTION_TYPES.EDIT_DIALOG });
+        console.log(stateEdit);
     };
     return (
         <div>
@@ -69,6 +77,7 @@ export default function BarangayIndex() {
                 </div>
                 {/* BUTTON AND SEARCH */}
 
+                {/* TABLE */}
                 <div className="overflow-x-auto">
                     <table
                         className="w-full min-w-[540px]"
@@ -125,7 +134,10 @@ export default function BarangayIndex() {
                                             </span>
                                         </td>
                                         <td className="flex py-2 px-4 border-b border-b-gray-50">
-                                            <span className="hover:cursor-pointer text-teal-500 inline-block p-1 tracking-wide rounded bg-emerald-500/10 text-emerald-500 font-medium text-[13px] leading-none">
+                                            <span
+                                                onClick={handleClickEdit}
+                                                className="hover:cursor-pointer text-teal-500 inline-block p-1 tracking-wide rounded bg-emerald-500/10 text-emerald-500 font-medium text-[13px] leading-none"
+                                            >
                                                 Edit
                                             </span>
                                             <span className="hover:cursor-pointer text-red-500 inline-block p-1 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[13px] leading-none">
@@ -138,6 +150,7 @@ export default function BarangayIndex() {
                         </tbody>
                     </table>
                 </div>
+                {/* TABLE */}
             </div>
 
             {/* CREATE */}
@@ -150,7 +163,12 @@ export default function BarangayIndex() {
             />
 
             {/* EDIT */}
-            {/* <BarangayEdit /> */}
+            <BarangayEdit
+                isOpen={stateEdit.editDialog}
+                isClose={() =>
+                    dispatchEdit({ type: ACTION_TYPES.EDIT_DIALOG_CLOSE })
+                }
+            />
         </div>
     );
 }
