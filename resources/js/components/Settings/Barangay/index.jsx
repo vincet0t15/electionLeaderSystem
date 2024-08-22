@@ -40,8 +40,8 @@ export default function BarangayIndex() {
     };
 
     const handleClickEdit = (data) => {
-        dispatchEdit({ type: "DATA_TO_EDIT", payload: data });
-        dispatchEdit({ type: ACTION_TYPES.EDIT_DIALOG });
+        dispatchEdit({ type: "LOAD_DATA_TO_EDIT", payload: data });
+        dispatchEdit({ type: "EDIT_DIALOG_OPEN" });
         console.log(stateEdit);
     };
     return (

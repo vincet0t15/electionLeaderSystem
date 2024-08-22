@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from "react";
+import React, { useEffect, useReducer } from "react";
 import {
     Button,
     Dialog,
@@ -13,7 +13,7 @@ import { barangayEditReducer, INITIAL_STATE_EDIT } from "./Reducer/editReducer";
 import { ACTION_TYPES } from "../../../actionType";
 import AlertMessage from "../../../Alert";
 
-export function BarangayEdit({ isOpen, isClose, onSaved }) {
+export function BarangayEdit({ isOpen, isClose, onSaved, data }) {
     const [stateEdit, dispatchEdit] = useReducer(
         barangayEditReducer,
         INITIAL_STATE_EDIT
@@ -27,12 +27,12 @@ export function BarangayEdit({ isOpen, isClose, onSaved }) {
     };
 
     const storeBarangay = async () => {
-        dispatch({ type: ACTION_TYPES.SAVE_START });
+        dispatchEdit({ type: ACTION_TYPES.SAVE_START });
 
         try {
-            const response = await apiClient.post("barangay", state.form);
+            const response = await apiClient.post("barangay", stateEdit.form);
 
-            dispatch({
+            dispatchEdit({
                 type: ACTION_TYPES.SAVE_SUCCESS,
                 payload: response.data,
             });
@@ -40,18 +40,28 @@ export function BarangayEdit({ isOpen, isClose, onSaved }) {
             onSaved();
             isClose();
         } catch (error) {
-            dispatch({
+            dispatchEdit({
                 type: ACTION_TYPES.FETCH_ERROR,
                 payload: error.response.data.errors,
             });
         }
     };
+
+    useEffect(() => {
+        if (isOpen && data) {
+            dispatchEdit({
+                type: ACTION_TYPES.LOAD_DATA_TO_EDIT,
+                payload: data,
+            });
+        }
+    }, [isOpen, data]);
+
     return (
         <>
-            <AlertMessage
-                ALertData={stateEdit.alertData}
-                isCLose={() => dispatch({ type: ACTION_TYPES.CLEAR_ALERT })}
-            />
+            {/* <AlertMessage
+                alertData={stateEdit.alertData} // Corrected prop name
+                isClose={() => dispatchEdit({ type: ACTION_TYPES.CLEAR_ALERT })}
+            /> */}
 
             <Dialog
                 size="xs"
@@ -65,12 +75,12 @@ export function BarangayEdit({ isOpen, isClose, onSaved }) {
                             color="blue-gray"
                             className="uppercase text-gray-700 font-semibold tracking-widest"
                         >
-                            Create Barangay{JSON.stringify(stateEdit.error)}
+                            EDIT Barangay{JSON.stringify(stateEdit.form)}
                         </Typography>
 
                         <Input
                             value={stateEdit.form.barangay}
-                            error={stateEdit.error.barangay ? true : false}
+                            error={!!stateEdit.error.barangay} // Simplified boolean check
                             onChange={handleInputChange}
                             name="barangay"
                             label="Barangay"
@@ -87,7 +97,7 @@ export function BarangayEdit({ isOpen, isClose, onSaved }) {
                             fullWidth
                             className="tracking-widest justify-center items-center"
                         >
-                            Create
+                            Save
                         </Button>
                     </CardFooter>
                 </Card>

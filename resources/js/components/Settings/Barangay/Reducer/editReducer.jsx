@@ -1,4 +1,4 @@
-import { ACTION_TYPES } from "../../../../actionType";
+import { EDIT_BARANGAY_ACTION_TYPES } from "../editBarangayActionType";
 
 export const INITIAL_STATE_EDIT = {
     editDialog: false,
@@ -17,7 +17,7 @@ export const INITIAL_STATE_EDIT = {
 
 export const barangayEditReducer = (state, action) => {
     switch (action.type) {
-        case ACTION_TYPES.SET_FIELD:
+        case EDIT_BARANGAY_ACTION_TYPES.SET_FIELD:
             return {
                 ...state,
                 form: {
@@ -25,20 +25,64 @@ export const barangayEditReducer = (state, action) => {
                     [action.payload.name]: action.payload.value,
                 },
             };
-        case ACTION_TYPES.EDIT_DIALOG:
+        case EDIT_BARANGAY_ACTION_TYPES.EDIT_DIALOG_OPEN:
             return {
                 ...state,
                 editDialog: true,
             };
-        case ACTION_TYPES.EDIT_DIALOG_CLOSE:
+        case EDIT_BARANGAY_ACTION_TYPES.EDIT_DIALOG_CLOSE:
             return {
                 ...state,
                 editDialog: false,
             };
-        case "DATA_TO_EDIT":
+        case EDIT_BARANGAY_ACTION_TYPES.LOAD_DATA_TO_EDIT:
             return {
                 ...state,
                 dataToEdit: action.payload,
+                form: {
+                    ...state.form,
+                    barangay: action.payload.barangay || "", // Populate form with data to edit
+                },
+            };
+        case EDIT_BARANGAY_ACTION_TYPES.SAVE_START:
+            return {
+                ...state,
+                saving: true,
+                error: {},
+            };
+        case EDIT_BARANGAY_ACTION_TYPES.SAVE_SUCCESS:
+            return {
+                ...state,
+                saving: false,
+                alertData: {
+                    isShow: true,
+                    message: "Barangay successfully saved!",
+                    status: "success",
+                },
+                dataToEdit: {},
+                form: {
+                    barangay: "",
+                },
+            };
+        case EDIT_BARANGAY_ACTION_TYPES.SAVE_ERROR:
+            return {
+                ...state,
+                saving: false,
+                error: action.payload,
+                alertData: {
+                    isShow: true,
+                    message: "Error saving Barangay.",
+                    status: "error",
+                },
+            };
+        case EDIT_BARANGAY_ACTION_TYPES.CLEAR_ALERT:
+            return {
+                ...state,
+                alertData: {
+                    isShow: false,
+                    message: "",
+                    status: "",
+                },
             };
         default:
             return state;
