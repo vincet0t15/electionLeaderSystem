@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BarangayRequest\BarangayStoreRequest;
+use App\Http\Requests\BarangayRequest\BarangayUpdateeRequest;
 use App\Models\Barangay;
 use Illuminate\Http\Request;
 
@@ -60,9 +61,16 @@ class BarangayController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(BarangayUpdateeRequest $request, Barangay $barangay)
     {
-        //
+        $barangay = Barangay::find($barangay->id);
+        $barangay->barangay = $request->barangay;
+        $barangay->save();
+
+        return [
+            'message' => 'Successfully updated',
+            'status' => 'success'
+        ];
     }
 
     /**

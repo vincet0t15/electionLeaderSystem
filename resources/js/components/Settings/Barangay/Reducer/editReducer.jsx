@@ -4,8 +4,9 @@ export const INITIAL_STATE_EDIT = {
     editDialog: false,
     saving: false,
     error: {},
-    dataToEdit: {},
+
     form: {
+        id: "",
         barangay: "",
     },
     alertData: {
@@ -38,10 +39,9 @@ export const barangayEditReducer = (state, action) => {
         case EDIT_BARANGAY_ACTION_TYPES.LOAD_DATA_TO_EDIT:
             return {
                 ...state,
-                dataToEdit: action.payload,
                 form: {
-                    ...state.form,
-                    barangay: action.payload.barangay || "", // Populate form with data to edit
+                    id: action.payload.id,
+                    barangay: action.payload.barangay,
                 },
             };
         case EDIT_BARANGAY_ACTION_TYPES.SAVE_START:
@@ -56,10 +56,10 @@ export const barangayEditReducer = (state, action) => {
                 saving: false,
                 alertData: {
                     isShow: true,
-                    message: "Barangay successfully saved!",
-                    status: "success",
+                    message: action.payload.message,
+                    status: action.payload.status,
                 },
-                dataToEdit: {},
+
                 form: {
                     barangay: "",
                 },

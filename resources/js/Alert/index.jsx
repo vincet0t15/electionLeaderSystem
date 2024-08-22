@@ -1,34 +1,32 @@
-import { Alert } from "@material-tailwind/react";
 import React, { useEffect } from "react";
+import { Alert } from "@material-tailwind/react";
 
-export default function AlertMessage({ ALertData, isCLose }) {
-    const [open, setOpen] = React.useState(true);
+export default function AlertMessage({ alertData, isClose }) {
     useEffect(() => {
-        if (ALertData.isShow) {
+        if (alertData.isShow) {
             const timer = setTimeout(() => {
-                setOpen(false);
-                isCLose();
+                isClose(); // Ensure this is correctly called as a function
             }, 5000);
 
             return () => {
                 clearTimeout(timer);
             };
         }
-    }, [ALertData]);
+    }, [alertData, isClose]); // Include isClose in dependency array
 
     return (
         <div>
             <Alert
-                color={ALertData.status === "success" ? "teal" : "red"}
+                color={alertData.status === "success" ? "teal" : "red"}
                 className="fixed top-12 right-2 z-50 mt-16 w-1/4 m-2"
-                open={ALertData.isShow}
-                onClose={isCLose}
+                open={alertData.isShow}
+                onClose={isClose} // Make sure isClose is a function
                 animate={{
                     mount: { y: 0 },
                     unmount: { y: 100 },
                 }}
             >
-                {ALertData.message}
+                {alertData.message}
             </Alert>
         </div>
     );

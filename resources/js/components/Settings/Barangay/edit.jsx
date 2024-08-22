@@ -10,30 +10,34 @@ import {
 } from "@material-tailwind/react";
 import apiClient from "../../../apiClient";
 import { barangayEditReducer, INITIAL_STATE_EDIT } from "./Reducer/editReducer";
-import { ACTION_TYPES } from "../../../actionType";
+import { EDIT_BARANGAY_ACTION_TYPES } from "./editBarangayActionType";
 import AlertMessage from "../../../Alert";
 
-export function BarangayEdit({ isOpen, isClose, onSaved, data }) {
+export function BarangayEdit({ isOpen, isClose, onSaved, dataToEdit }) {
     const [stateEdit, dispatchEdit] = useReducer(
         barangayEditReducer,
         INITIAL_STATE_EDIT
     );
 
     const handleInputChange = (e) => {
+        const { name, value } = e.target;
         dispatchEdit({
-            type: ACTION_TYPES.SET_FIELD,
-            payload: { name: e.target.name, value: e.target.value },
+            type: "SET_FIELD",
+            payload: { name, value },
         });
     };
 
-    const storeBarangay = async () => {
-        dispatchEdit({ type: ACTION_TYPES.SAVE_START });
+    const updateBarangay = async () => {
+        dispatchEdit({ type: EDIT_BARANGAY_ACTION_TYPES.SAVE_START });
 
         try {
-            const response = await apiClient.post("barangay", stateEdit.form);
+            const response = await apiClient.patch(
+                "barangay/" + stateEdit.form.id,
+                stateEdit.form
+            );
 
             dispatchEdit({
-                type: ACTION_TYPES.SAVE_SUCCESS,
+                type: EDIT_BARANGAY_ACTION_TYPES.SAVE_SUCCESS,
                 payload: response.data,
             });
 
@@ -41,28 +45,31 @@ export function BarangayEdit({ isOpen, isClose, onSaved, data }) {
             isClose();
         } catch (error) {
             dispatchEdit({
-                type: ACTION_TYPES.FETCH_ERROR,
+                type: EDIT_BARANGAY_ACTION_TYPES.SAVE_ERROR,
                 payload: error.response.data.errors,
             });
         }
     };
 
     useEffect(() => {
-        if (isOpen && data) {
+        if (isOpen && dataToEdit) {
             dispatchEdit({
-                type: ACTION_TYPES.LOAD_DATA_TO_EDIT,
-                payload: data,
+                type: EDIT_BARANGAY_ACTION_TYPES.LOAD_DATA_TO_EDIT,
+                payload: dataToEdit,
             });
         }
-    }, [isOpen, data]);
+    }, [isOpen, dataToEdit]);
 
     return (
         <>
-            {/* <AlertMessage
-                alertData={stateEdit.alertData} // Corrected prop name
-                isClose={() => dispatchEdit({ type: ACTION_TYPES.CLEAR_ALERT })}
-            /> */}
-
+            <AlertMessage
+                alertData={stateEdit.alertData}
+                isClose={() =>
+                    dispatchEdit({
+                        type: EDIT_BARANGAY_ACTION_TYPES.CLEAR_ALERT,
+                    })
+                }
+            />
             <Dialog
                 size="xs"
                 open={isOpen}
@@ -71,33 +78,37 @@ export function BarangayEdit({ isOpen, isClose, onSaved, data }) {
             >
                 <Card className="mx-auto w-full max-w-[24rem]">
                     <CardBody className="flex flex-col gap-4">
-                        <Typography
-                            color="blue-gray"
-                            className="uppercase text-gray-700 font-semibold tracking-widest"
-                        >
-                            EDIT Barangay{JSON.stringify(stateEdit.form)}
-                        </Typography>
-
-                        <Input
-                            value={stateEdit.form.barangay}
-                            error={!!stateEdit.error.barangay} // Simplified boolean check
-                            onChange={handleInputChange}
-                            name="barangay"
-                            label="Barangay"
-                            color="teal"
-                            size="md"
-                            className="tracking-widest"
-                        />
+                        <div className="">
+                            <Typography
+                                color="blue-gray"
+                                className="mb-4 uppercase text-gray-700 font-semibold tracking-widest"
+                            >
+                                EDIT Barangay
+                            </Typography>
+                            <Input
+                                value={stateEdit.form.barangay}
+                                error={!!stateEdit.error.barangay}
+                                onChange={handleInputChange}
+                                name="barangay"
+                                label="Barangay"
+                                color="teal"
+                                size="md"
+                                className="tracking-widest"
+                            />
+                            <span className="text-red-700 tracking-wide text-sm">
+                                {stateEdit.error.barangay}
+                            </span>
+                        </div>
                     </CardBody>
                     <CardFooter className="pt-0">
                         <Button
                             loading={stateEdit.saving}
                             color="teal"
-                            onClick={storeBarangay}
+                            onClick={updateBarangay}
                             fullWidth
                             className="tracking-widest justify-center items-center"
                         >
-                            Save
+                            save changes
                         </Button>
                     </CardFooter>
                 </Card>

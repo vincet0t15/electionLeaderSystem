@@ -8,12 +8,15 @@ import apiClient from "../../../apiClient";
 import moment from "moment";
 import { BarangayEdit } from "./edit";
 import { Spinner } from "@material-tailwind/react";
+import { EDIT_BARANGAY_ACTION_TYPES } from "./editBarangayActionType";
+
 export default function BarangayIndex() {
     const [state, dispatch] = useReducer(barangayFetchReducer, INITIAL_STATE);
     const [stateEdit, dispatchEdit] = useReducer(
         barangayEditReducer,
         INITIAL_STATE_EDIT
     );
+
     const handleFetch = async () => {
         dispatch({ type: ACTION_TYPES.FETCH_START });
 
@@ -42,8 +45,8 @@ export default function BarangayIndex() {
     const handleClickEdit = (data) => {
         dispatchEdit({ type: "LOAD_DATA_TO_EDIT", payload: data });
         dispatchEdit({ type: "EDIT_DIALOG_OPEN" });
-        console.log(stateEdit);
     };
+
     return (
         <div>
             <div className="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md">
@@ -167,10 +170,14 @@ export default function BarangayIndex() {
 
             {/* EDIT */}
             <BarangayEdit
+                onSaved={handleFetch}
                 isOpen={stateEdit.editDialog}
                 isClose={() =>
-                    dispatchEdit({ type: ACTION_TYPES.EDIT_DIALOG_CLOSE })
+                    dispatchEdit({
+                        type: EDIT_BARANGAY_ACTION_TYPES.EDIT_DIALOG_CLOSE,
+                    })
                 }
+                dataToEdit={stateEdit.form}
             />
         </div>
     );

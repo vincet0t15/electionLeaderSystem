@@ -3,6 +3,7 @@
 namespace App\Http\Requests\BarangayRequest;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class BarangayUpdateeRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class BarangayUpdateeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +22,13 @@ class BarangayUpdateeRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('barangay')->id;
+
         return [
-            //
+            'barangay' => [
+                'required',
+                Rule::unique('barangays')->ignore($id)->whereNull('deleted_at'),
+            ],
         ];
     }
 }

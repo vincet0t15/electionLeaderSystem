@@ -45,8 +45,8 @@ export function BarangayCreate({ isOpen, isClose, onSaved }) {
     return (
         <>
             <AlertMessage
-                ALertData={state.alertData}
-                isCLose={() => dispatch({ type: ACTION_TYPES.CLEAR_ALERT })}
+                alertData={state.alertData}
+                isClose={() => dispatch({ type: ACTION_TYPES.CLEAR_ALERT })}
             />
 
             <Dialog
