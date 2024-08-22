@@ -19,6 +19,7 @@ class BarangayController extends Controller
             $query->where('barangay', 'like', '%' . request('search') . '%');
         })
             ->with('user')
+            ->orderBy('barangay', 'asc')
             ->paginate(10);
     }
 
