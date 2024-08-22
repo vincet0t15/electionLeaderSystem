@@ -91,19 +91,21 @@ export default function BarangayIndex() {
                                 <tr key={index}>
                                     <td className="py-2 px-4 border-b border-b-gray-50">
                                         <div className="flex items-center">
-                                            <span className="text-[13px] font-medium text-gray-700">
+                                            <span className="text-[13px] font-medium text-gray-700 uppercase">
                                                 {data.barangay}
                                             </span>
                                         </div>
                                     </td>
                                     <td className="py-2 px-4 border-b border-b-gray-50">
-                                        <span className="text-[13px] font-medium text-gray-700 tracking-wide">
+                                        <span className="text-[13px] font-medium text-gray-700 tracking-wide uppercase">
                                             {data.user.name}
                                         </span>
                                     </td>
                                     <td className="py-2 px-4 border-b border-b-gray-50">
-                                        <span className="text-[13px] font-medium text-gray-700 tracking-wide">
-                                            {data.date_created}
+                                        <span className="text-[13px] font-medium text-gray-700 tracking-wide uppercase">
+                                            {moment(data.date_created).format(
+                                                "LL"
+                                            )}
                                         </span>
                                     </td>
                                     <td className="py-2 px-4 border-b border-b-gray-50">
