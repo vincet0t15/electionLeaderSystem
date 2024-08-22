@@ -9,15 +9,18 @@ import {
     Input,
 } from "@material-tailwind/react";
 import apiClient from "../../../apiClient";
-import { postReducer, INITIAL_STATE } from "./Reducer/postReducer";
+import { barangayEditReducer, INITIAL_STATE_EDIT } from "./Reducer/editReducer";
 import { ACTION_TYPES } from "../../../actionType";
 import AlertMessage from "../../../Alert";
 
 export function BarangayEdit({ isOpen, isClose, onSaved }) {
-    const [state, dispatch] = useReducer(postReducer, INITIAL_STATE);
+    const [stateEdit, dispatchEdit] = useReducer(
+        barangayEditReducer,
+        INITIAL_STATE_EDIT
+    );
 
     const handleInputChange = (e) => {
-        dispatch({
+        dispatchEdit({
             type: ACTION_TYPES.SET_FIELD,
             payload: { name: e.target.name, value: e.target.value },
         });
@@ -46,7 +49,7 @@ export function BarangayEdit({ isOpen, isClose, onSaved }) {
     return (
         <>
             <AlertMessage
-                ALertData={state.alertData}
+                ALertData={stateEdit.alertData}
                 isCLose={() => dispatch({ type: ACTION_TYPES.CLEAR_ALERT })}
             />
 
@@ -62,11 +65,12 @@ export function BarangayEdit({ isOpen, isClose, onSaved }) {
                             color="blue-gray"
                             className="uppercase text-gray-700 font-semibold tracking-widest"
                         >
-                            Create Barangay{JSON.stringify(state.error)}
+                            Create Barangay{JSON.stringify(stateEdit.error)}
                         </Typography>
 
                         <Input
-                            error={state.error.barangay ? true : false}
+                            value={stateEdit.form.barangay}
+                            error={stateEdit.error.barangay ? true : false}
                             onChange={handleInputChange}
                             name="barangay"
                             label="Barangay"
@@ -77,7 +81,7 @@ export function BarangayEdit({ isOpen, isClose, onSaved }) {
                     </CardBody>
                     <CardFooter className="pt-0">
                         <Button
-                            loading={state.saving}
+                            loading={stateEdit.saving}
                             color="teal"
                             onClick={storeBarangay}
                             fullWidth

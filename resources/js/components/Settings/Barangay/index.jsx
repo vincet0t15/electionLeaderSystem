@@ -39,7 +39,8 @@ export default function BarangayIndex() {
         dispatch({ type: ACTION_TYPES.CREATE_DIALOG });
     };
 
-    const handleClickEdit = () => {
+    const handleClickEdit = (data) => {
+        dispatchEdit({ type: "DATA_TO_EDIT", payload: data });
         dispatchEdit({ type: ACTION_TYPES.EDIT_DIALOG });
         console.log(stateEdit);
     };
@@ -135,7 +136,9 @@ export default function BarangayIndex() {
                                         </td>
                                         <td className="flex py-2 px-4 border-b border-b-gray-50">
                                             <span
-                                                onClick={handleClickEdit}
+                                                onClick={() =>
+                                                    handleClickEdit(data)
+                                                }
                                                 className="hover:cursor-pointer text-teal-500 inline-block p-1 tracking-wide rounded bg-emerald-500/10 text-emerald-500 font-medium text-[13px] leading-none"
                                             >
                                                 Edit
