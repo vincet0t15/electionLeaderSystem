@@ -23,6 +23,7 @@ export default function BarangayIndex() {
         per_page: 0,
         current_total: 0,
     });
+
     const [selectedPage, setSelectedPage] = useState(1);
     // pagination
 

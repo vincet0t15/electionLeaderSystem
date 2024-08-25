@@ -13,7 +13,11 @@ class PrecinctController extends Controller
      */
     public function index()
     {
-        //
+        return Precinct::when(request('search'), function ($query) {
+            $query->where('precinct', 'like', '%' . request('search') . '%');
+        })
+            ->with('user')
+            ->paginate(10);
     }
 
     /**

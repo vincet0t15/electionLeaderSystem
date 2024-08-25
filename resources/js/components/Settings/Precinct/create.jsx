@@ -9,18 +9,37 @@ import {
     Input,
 } from "@material-tailwind/react";
 import apiClient from "../../../apiClient";
+import AlertMessage from "../../../Alert";
 
-export function PrecenctCreate({ isOpen, isClose }) {
+export function PrecenctCreate({ isOpen, isClose, onSaved }) {
     const [error, setError] = useState({});
     const [formData, setFormData] = useState({
         precinct: "",
     });
+    const [loading, setLoading] = useState(false);
+    const [alertData, setAlertData] = useState({
+        isShow: false,
+        message: "",
+        status: "",
+    });
 
     const storePrecinct = async () => {
+        setLoading(true);
         try {
             const response = await apiClient.post("precinct", formData);
-            console.log(response);
+            onSaved();
+            setAlertData({
+                isShow: true,
+                message: response.data.message,
+                status: response.data.status,
+            });
+            setFormData({
+                precinct: "",
+            });
+            setLoading(false);
+            isClose();
         } catch (error) {
+            setLoading(false);
             setError(error.response.data.errors);
         }
     };
@@ -30,6 +49,12 @@ export function PrecenctCreate({ isOpen, isClose }) {
     };
     return (
         <>
+            <AlertMessage
+                alertData={alertData}
+                isClose={() =>
+                    setAlertData({ isShow: false, message: "", status: "" })
+                }
+            />
             <Dialog
                 size="xs"
                 open={isOpen}

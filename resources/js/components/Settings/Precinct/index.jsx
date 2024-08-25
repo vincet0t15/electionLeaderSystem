@@ -1,14 +1,52 @@
-import {
-    MagnifyingGlassCircleIcon,
-    MagnifyingGlassIcon,
-    ServerStackIcon,
-} from "@heroicons/react/24/outline";
-import React, { useState } from "react";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import React, { useEffect, useState } from "react";
 import { PrecenctCreate } from "./create";
-
+import apiClient from "../../../apiClient";
+import { Spinner } from "@material-tailwind/react";
+import moment from "moment";
+import PaginatedItems from "../../Pagination/Pagination";
 export default function PrecentIndex() {
     const [createDialog, setCreateDialog] = useState(false);
+    const [tableLoading, setTableLoading] = useState(false);
+    const [dataList, setDataList] = useState({ data: [] });
+    // pagination
+    const [pages, setPages] = useState({
+        total_items: 0,
+        per_page: 0,
+        current_total: 0,
+    });
 
+    const [selectedPage, setSelectedPage] = useState(1);
+    // pagination
+
+    const [search, setSearch] = useState("");
+
+    const getPrecinct = async () => {
+        try {
+            setTableLoading(true);
+            const response = await apiClient.get(
+                "precinct?page=" + selectedPage + "&search=" + search
+            );
+            setPages({
+                total_items: response.data.total,
+                per_page: response.data.per_page,
+                current_total: response.data.to,
+            });
+            setDataList(response.data);
+            setTableLoading(false);
+        } catch (error) {
+            setTableLoading(false);
+        }
+    };
+    useEffect(() => {
+        getPrecinct();
+    }, [selectedPage]);
+
+    const handleSearchKeyDown = (e) => {
+        if (e.key === "Enter") {
+            getPrecinct();
+        }
+    };
     return (
         <div>
             <div className="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md">
@@ -32,6 +70,9 @@ export default function PrecentIndex() {
 
                     <div className="relative float-right w-full md:w-72 content-end">
                         <input
+                            onKeyDown={handleSearchKeyDown}
+                            onChange={(e) => setSearch(e.target.value)}
+                            value={search}
                             type="text"
                             className="py-2 pr-4 pl-10 bg-gray-50 w-full text-gray-500 outline-none border border-gray-100 rounded-md text-sm focus:border-teal-500"
                             placeholder="Search..."
@@ -47,500 +88,84 @@ export default function PrecentIndex() {
                     <table
                         className="w-full min-w-[540px]"
                         data-tab-for="order"
-                        data-page="active"
                     >
                         <thead>
                             <tr>
-                                <th className="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left rounded-tl-md rounded-bl-md">
-                                    Service
+                                <th className="text-[12px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-gray-50 text-left rounded-tl-md rounded-bl-md">
+                                    BARANGAY
                                 </th>
-                                <th className="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left">
-                                    Estimate
+                                <th className="text-[12px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-gray-50 text-left">
+                                    CREATED BY
                                 </th>
-                                <th className="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left">
-                                    Budget
+                                <th className="text-[12px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-gray-50 text-left">
+                                    DATE CREATED
                                 </th>
-                                <th className="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left rounded-tr-md rounded-br-md">
-                                    Status
+                                <th className="text-[12px] uppercase tracking-wide font-medium text-gray-600 py-2 px-4 bg-gray-50 text-left rounded-tr-md rounded-br-md">
+                                    ACTION
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <div className="flex items-center">
-                                        {/* <img src="https://placehold.co/32x32" alt="" className="w-8 h-8 rounded object-cover block"> */}
-                                        <a
-                                            href="#"
-                                            className="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate"
-                                        >
-                                            Create landing page
-                                        </a>
-                                    </div>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        3 days
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        $56
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="inline-block p-1 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[12px] leading-none">
-                                        In progress
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <div className="flex items-center">
-                                        {/* <img src="https://placehold.co/32x32" alt="" className="w-8 h-8 rounded object-cover block"> */}
-                                        <a
-                                            href="#"
-                                            className="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate"
-                                        >
-                                            Create landing page
-                                        </a>
-                                    </div>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        3 days
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        $56
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="inline-block p-1 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[12px] leading-none">
-                                        In progress
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <div className="flex items-center">
-                                        {/* <img src="https://placehold.co/32x32" alt="" className="w-8 h-8 rounded object-cover block"> */}
-                                        <a
-                                            href="#"
-                                            className="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate"
-                                        >
-                                            Create landing page
-                                        </a>
-                                    </div>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        3 days
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        $56
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="inline-block p-1 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[12px] leading-none">
-                                        In progress
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <div className="flex items-center">
-                                        {/* <img src="https://placehold.co/32x32" alt="" className="w-8 h-8 rounded object-cover block"> */}
-                                        <a
-                                            href="#"
-                                            className="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate"
-                                        >
-                                            Create landing page
-                                        </a>
-                                    </div>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        3 days
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        $56
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="inline-block p-1 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[12px] leading-none">
-                                        In progress
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <div className="flex items-center">
-                                        {/* <img src="https://placehold.co/32x32" alt="" className="w-8 h-8 rounded object-cover block"> */}
-                                        <a
-                                            href="#"
-                                            className="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate"
-                                        >
-                                            Create landing page
-                                        </a>
-                                    </div>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        3 days
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        $56
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="inline-block p-1 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[12px] leading-none">
-                                        In progress
-                                    </span>
-                                </td>
-                            </tr>
+                            {tableLoading ? (
+                                <tr className="items-center justify-center text-center">
+                                    <td colSpan={5}>
+                                        <div className="border-b flex items-center justify-center text-center p-2">
+                                            <Spinner color="teal" />
+                                            <span className="pl-3">
+                                                Loading data please wait...{" "}
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ) : (
+                                dataList.data.map((data, index) => (
+                                    <tr key={index}>
+                                        <td className="py-2 px-4 border-b border-b-gray-50">
+                                            <div className="flex items-center">
+                                                <span className="text-[13px] font-medium text-gray-700 uppercase">
+                                                    {data.precinct}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td className="py-2 px-4 border-b border-b-gray-50">
+                                            <span className="text-[13px] font-medium text-gray-700 tracking-wide uppercase">
+                                                {data.user.name}
+                                            </span>
+                                        </td>
+                                        <td className="py-2 px-4 border-b border-b-gray-50">
+                                            <span className="text-[13px] font-medium text-gray-700 tracking-wide uppercase">
+                                                {moment(
+                                                    data.date_created
+                                                ).format("LL")}
+                                            </span>
+                                        </td>
+                                        <td className="flex py-2 px-4 border-b border-b-gray-50">
+                                            <span className="hover:cursor-pointer text-teal-500 inline-block p-1 tracking-wide rounded bg-emerald-500/10 text-emerald-500 font-medium text-[13px] leading-none">
+                                                Edit
+                                            </span>
+                                            <span className="hover:cursor-pointer text-red-500 inline-block p-1 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[13px] leading-none">
+                                                Delete
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </table>
-                    <table
-                        className="w-full min-w-[540px] hidden"
-                        data-tab-for="order"
-                        data-page="completed"
-                    >
-                        <thead>
-                            <tr>
-                                <th className="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left rounded-tl-md rounded-bl-md">
-                                    Service
-                                </th>
-                                <th className="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left">
-                                    Estimate
-                                </th>
-                                <th className="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left">
-                                    Budget
-                                </th>
-                                <th className="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left rounded-tr-md rounded-br-md">
-                                    Status
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <div className="flex items-center">
-                                        {/* <img src="https://placehold.co/32x32" alt="" className="w-8 h-8 rounded object-cover block"> */}
-                                        <a
-                                            href="#"
-                                            className="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate"
-                                        >
-                                            Create landing page
-                                        </a>
-                                    </div>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        3 days
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        $56
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="inline-block p-1 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[12px] leading-none">
-                                        Completed
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <div className="flex items-center">
-                                        {/* <img src="https://placehold.co/32x32" alt="" className="w-8 h-8 rounded object-cover block"> */}
-                                        <a
-                                            href="#"
-                                            className="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate"
-                                        >
-                                            Create landing page
-                                        </a>
-                                    </div>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        3 days
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        $56
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="inline-block p-1 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[12px] leading-none">
-                                        Completed
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <div className="flex items-center">
-                                        {/* <img src="https://placehold.co/32x32" alt="" className="w-8 h-8 rounded object-cover block"> */}
-                                        <a
-                                            href="#"
-                                            className="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate"
-                                        >
-                                            Create landing page
-                                        </a>
-                                    </div>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        3 days
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        $56
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="inline-block p-1 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[12px] leading-none">
-                                        Completed
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <div className="flex items-center">
-                                        {/* <img src="https://placehold.co/32x32" alt="" className="w-8 h-8 rounded object-cover block"> */}
-                                        <a
-                                            href="#"
-                                            className="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate"
-                                        >
-                                            Create landing page
-                                        </a>
-                                    </div>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        3 days
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        $56
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="inline-block p-1 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[12px] leading-none">
-                                        Completed
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <div className="flex items-center">
-                                        {/* <img src="https://placehold.co/32x32" alt="" className="w-8 h-8 rounded object-cover block"> */}
-                                        <a
-                                            href="#"
-                                            className="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate"
-                                        >
-                                            Create landing page
-                                        </a>
-                                    </div>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        3 days
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        $56
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="inline-block p-1 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[12px] leading-none">
-                                        Completed
-                                    </span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table
-                        className="w-full min-w-[540px] hidden"
-                        data-tab-for="order"
-                        data-page="canceled"
-                    >
-                        <thead>
-                            <tr>
-                                <th className="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left rounded-tl-md rounded-bl-md">
-                                    Service
-                                </th>
-                                <th className="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left">
-                                    Estimate
-                                </th>
-                                <th className="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left">
-                                    Budget
-                                </th>
-                                <th className="text-[12px] uppercase tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left rounded-tr-md rounded-br-md">
-                                    Status
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <div className="flex items-center">
-                                        {/* <img src="https://placehold.co/32x32" alt="" className="w-8 h-8 rounded object-cover block"> */}
-                                        <a
-                                            href="#"
-                                            className="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate"
-                                        >
-                                            Create landing page
-                                        </a>
-                                    </div>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        3 days
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        $56
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="inline-block p-1 rounded bg-rose-500/10 text-rose-500 font-medium text-[12px] leading-none">
-                                        Canceled
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <div className="flex items-center">
-                                        {/* <img src="https://placehold.co/32x32" alt="" className="w-8 h-8 rounded object-cover block"> */}
-                                        <a
-                                            href="#"
-                                            className="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate"
-                                        >
-                                            Create landing page
-                                        </a>
-                                    </div>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        3 days
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        $56
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="inline-block p-1 rounded bg-rose-500/10 text-rose-500 font-medium text-[12px] leading-none">
-                                        Canceled
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <div className="flex items-center">
-                                        {/* <img src="https://placehold.co/32x32" alt="" className="w-8 h-8 rounded object-cover block"> */}
-                                        <a
-                                            href="#"
-                                            className="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate"
-                                        >
-                                            Create landing page
-                                        </a>
-                                    </div>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        3 days
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        $56
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="inline-block p-1 rounded bg-rose-500/10 text-rose-500 font-medium text-[12px] leading-none">
-                                        Canceled
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <div className="flex items-center">
-                                        {/* <img src="https://placehold.co/32x32" alt="" className="w-8 h-8 rounded object-cover block"> */}
-                                        <a
-                                            href="#"
-                                            className="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate"
-                                        >
-                                            Create landing page
-                                        </a>
-                                    </div>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        3 days
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        $56
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="inline-block p-1 rounded bg-rose-500/10 text-rose-500 font-medium text-[12px] leading-none">
-                                        Canceled
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <div className="flex items-center">
-                                        {/* <img src="https://placehold.co/32x32" alt="" className="w-8 h-8 rounded object-cover block"> */}
-                                        <a
-                                            href="#"
-                                            className="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate"
-                                        >
-                                            Create landing page
-                                        </a>
-                                    </div>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        3 days
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="text-[13px] font-medium text-gray-400">
-                                        $56
-                                    </span>
-                                </td>
-                                <td className="py-2 px-4 border-b border-b-gray-50">
-                                    <span className="inline-block p-1 rounded bg-rose-500/10 text-rose-500 font-medium text-[12px] leading-none">
-                                        Canceled
-                                    </span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div className="flex items-center justify-between border-t border-blue-gray-50 p-4">
+                        <PaginatedItems
+                            currentTotal={pages.current_total}
+                            itemsPerPage={pages.per_page || 1}
+                            totalItems={pages.total_items || 0}
+                            selectedPage={setSelectedPage}
+                        />
+                    </div>
                 </div>
             </div>
 
             {/* CREATE  */}
             <PrecenctCreate
+                onSaved={getPrecinct}
                 isOpen={createDialog}
                 isClose={() => setCreateDialog(false)}
             />

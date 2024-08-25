@@ -16,6 +16,7 @@ class Precinct extends Model
         return $this->belongsTo(User::class, 'created_by', 'id');
     }
 
+
     public static function boot()
     {
         parent::boot();
