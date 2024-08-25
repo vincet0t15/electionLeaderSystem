@@ -116,6 +116,15 @@ export default function PrecentIndex() {
                                         </div>
                                     </td>
                                 </tr>
+                            ) : dataList.data.length === 0 ? (
+                                <tr>
+                                    <td
+                                        colSpan={4}
+                                        className="text-center text-gray-500"
+                                    >
+                                        No data found.
+                                    </td>
+                                </tr>
                             ) : (
                                 dataList.data.map((data, index) => (
                                     <tr key={index}>
