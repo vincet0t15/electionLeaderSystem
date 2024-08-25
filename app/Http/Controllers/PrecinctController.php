@@ -17,6 +17,7 @@ class PrecinctController extends Controller
             $query->where('precinct', 'like', '%' . request('search') . '%');
         })
             ->with('user')
+            ->orderBy('precinct', 'asc')
             ->paginate(10);
     }
 

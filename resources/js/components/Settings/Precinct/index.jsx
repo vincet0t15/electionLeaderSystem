@@ -5,47 +5,46 @@ import apiClient from "../../../apiClient";
 import { Spinner } from "@material-tailwind/react";
 import moment from "moment";
 import PaginatedItems from "../../Pagination/Pagination";
+import { useQuery, useQueryClient } from "react-query";
 export default function PrecentIndex() {
     const [createDialog, setCreateDialog] = useState(false);
-    const [tableLoading, setTableLoading] = useState(false);
-    const [dataList, setDataList] = useState({ data: [] });
+    const queryClient = useQueryClient();
+
     // pagination
     const [pages, setPages] = useState({
         total_items: 0,
         per_page: 0,
         current_total: 0,
     });
-
     const [selectedPage, setSelectedPage] = useState(1);
     // pagination
 
     const [search, setSearch] = useState("");
-    const {} = useQuery({});
-    const getPrecinct = async () => {
-        try {
-            setTableLoading(true);
+
+    const { data: dataList, isLoading } = useQuery({
+        queryKey: ["dataList", { selectedPage, search }],
+        queryFn: async () => {
             const response = await apiClient.get(
-                "precinct?page=" + selectedPage + "&search=" + search
+                "precinct?search=" + search + "&page=" + selectedPage
             );
             setPages({
                 total_items: response.data.total,
                 per_page: response.data.per_page,
                 current_total: response.data.to,
             });
-            setDataList(response.data);
-            setTableLoading(false);
-        } catch (error) {
-            setTableLoading(false);
-        }
-    };
-    useEffect(() => {
-        getPrecinct();
-    }, [selectedPage]);
+            return response.data;
+        },
+    });
 
     const handleSearchKeyDown = (e) => {
         if (e.key === "Enter") {
-            getPrecinct();
+            setSelectedPage(1);
         }
+    };
+
+    const getPrecinct = () => {
+        queryClient.invalidateQueries(["dataList", { selectedPage, search }]);
+        setCreateDialog(false);
     };
     return (
         <div>
@@ -106,7 +105,7 @@ export default function PrecentIndex() {
                             </tr>
                         </thead>
                         <tbody>
-                            {tableLoading ? (
+                            {isLoading ? (
                                 <tr className="items-center justify-center text-center">
                                     <td colSpan={5}>
                                         <div className="border-b flex items-center justify-center text-center p-2">

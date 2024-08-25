@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import MyRoutes from "./components/router/myRoutes";
 import { BrowserRouter as Router } from "react-router-dom";
 import { createRoot } from "react-dom/client";
-
+import { QueryClient, QueryClientProvider } from "react-query";
 export default function Main() {
     return (
         <div>
@@ -13,9 +13,12 @@ export default function Main() {
 
 const rootElement = document.getElementById("app");
 const root = createRoot(rootElement);
+const queryClient = new QueryClient();
 
 root.render(
     <Router>
-        <Main />
+        <QueryClientProvider client={queryClient}>
+            <Main />
+        </QueryClientProvider>
     </Router>
 );
