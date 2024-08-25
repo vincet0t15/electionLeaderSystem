@@ -20,6 +20,7 @@ export default function PrecentIndex() {
     // pagination
 
     const [search, setSearch] = useState("");
+    const [searchTerm, setSearchTerm] = useState("");
 
     const { data: dataList, isLoading } = useQuery({
         queryKey: ["dataList", { selectedPage, search }],
@@ -38,6 +39,7 @@ export default function PrecentIndex() {
 
     const handleSearchKeyDown = (e) => {
         if (e.key === "Enter") {
+            setSearch(searchTerm);
             setSelectedPage(1);
         }
     };
@@ -70,8 +72,8 @@ export default function PrecentIndex() {
                     <div className="relative float-right w-full md:w-72 content-end">
                         <input
                             onKeyDown={handleSearchKeyDown}
-                            onChange={(e) => setSearch(e.target.value)}
-                            value={search}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            value={searchTerm}
                             type="text"
                             className="py-2 pr-4 pl-10 bg-gray-50 w-full text-gray-500 outline-none border border-gray-100 rounded-md text-sm focus:border-teal-500"
                             placeholder="Search..."
