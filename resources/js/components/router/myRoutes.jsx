@@ -13,7 +13,10 @@ import Dashboard from "../Masterpage/Dashboard";
 import GuestRoute from "./GuestRoute";
 import PrivateRoute from "./ProtectedRoute";
 import Settings from "../Settings";
+
+// SETTINGS
 import BarangayIndex from "../Settings/Barangay";
+import PrecentIndex from "../Settings/Precinct";
 
 export default function MyRoutes() {
     return (
@@ -34,6 +37,7 @@ export default function MyRoutes() {
                             element={<Navigate to="barangay" />}
                         />
                         <Route path="barangay" element={<BarangayIndex />} />
+                        <Route path="precinct" element={<PrecentIndex />} />
                     </Route>
                 </Route>
             </Route>

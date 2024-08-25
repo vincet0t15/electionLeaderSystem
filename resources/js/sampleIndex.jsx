@@ -1,11 +1,7 @@
-import {
-    MagnifyingGlassCircleIcon,
-    MagnifyingGlassIcon,
-    ServerStackIcon,
-} from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import React from "react";
 
-export default function BarangayIndex() {
+export default function PrecentIndex() {
     return (
         <div>
             <div className="">
@@ -21,7 +17,7 @@ export default function BarangayIndex() {
                                 type="button"
                                 data-tab="order"
                                 data-tab-page="active"
-                                className="bg-teal-700 text-sm font-medium text-white py-2 px-4 rounded-md w-24"
+                                className="w-full md:w-24 bg-teal-400 text-sm font-medium text-white py-2 px-4 rounded-md w-24 tracking-wide"
                             >
                                 Add
                             </button>

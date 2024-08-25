@@ -55,7 +55,7 @@ export default function SideBar() {
                 },
                 {
                     title: "Precinct",
-                    to: "settings-precint",
+                    to: "settings/precinct",
                     icon: BuildingOfficeIcon,
                 },
                 {
