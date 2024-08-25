@@ -1,18 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert } from "@material-tailwind/react";
 
 export default function AlertMessage({ alertData, isClose }) {
     useEffect(() => {
         if (alertData.isShow) {
             const timer = setTimeout(() => {
-                isClose(); // Ensure this is correctly called as a function
+                isClose();
             }, 5000);
 
             return () => {
                 clearTimeout(timer);
             };
         }
-    }, [alertData, isClose]); // Include isClose in dependency array
+    }, [alertData, isClose]);
 
     return (
         <div>
