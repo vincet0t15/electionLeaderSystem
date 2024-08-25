@@ -120,9 +120,9 @@ export default function PrecentIndex() {
                                 <tr>
                                     <td
                                         colSpan={4}
-                                        className="text-center text-gray-500"
+                                        className="py-2 px-4 text-center text-gray-500 tracking-wide"
                                     >
-                                        No data found.
+                                        No data found...
                                     </td>
                                 </tr>
                             ) : (
