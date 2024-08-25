@@ -13,7 +13,9 @@ export default function PrecentIndex() {
         <div>
             <div className="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md">
                 <div className="flex justify-between mb-4 items-start">
-                    <div className="font-medium">Manage orders</div>
+                    <div className="font-semibold tracking-widest uppercase text-gray-700">
+                        <div className="font-medium">Precinct List</div>
+                    </div>
                 </div>
 
                 {/* BUTTON AND SEARCH */}

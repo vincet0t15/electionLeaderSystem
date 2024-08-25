@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Button,
     Dialog,
@@ -8,8 +8,25 @@ import {
     Typography,
     Input,
 } from "@material-tailwind/react";
+import apiClient from "../../../apiClient";
 
 export function PrecenctCreate({ isOpen, isClose }) {
+    const [formData, setFormData] = useState({
+        precinct: "",
+    });
+
+    const storePrecinct = async () => {
+        try {
+            const response = await apiClient.post("precinct", formData);
+            console.log(response);
+        } catch (error) {
+            //
+        }
+    };
+
+    const handleInputChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
     return (
         <>
             <Dialog
@@ -27,12 +44,19 @@ export function PrecenctCreate({ isOpen, isClose }) {
                             Create Precinct
                         </Typography>
 
-                        <Input label="Precinct" color="teal" size="md" />
+                        <Input
+                            value={formData.precinct}
+                            name="precinct"
+                            onChange={handleInputChange}
+                            label="Precinct"
+                            color="teal"
+                            size="md"
+                        />
                     </CardBody>
                     <CardFooter className="pt-0">
                         <Button
                             color="teal"
-                            onClick={isClose}
+                            onClick={storePrecinct}
                             fullWidth
                             className="tracking-widest"
                         >
