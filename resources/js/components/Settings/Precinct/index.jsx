@@ -20,7 +20,7 @@ export default function PrecentIndex() {
     // pagination
 
     const [search, setSearch] = useState("");
-
+    const {} = useQuery({});
     const getPrecinct = async () => {
         try {
             setTableLoading(true);
