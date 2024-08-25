@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('precints', function (Blueprint $table) {
+        Schema::create('precincts', function (Blueprint $table) {
             $table->id();
             $table->string('precinct');
             $table->foreignId('created_by')->constrained('users');
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('precints');
+        Schema::dropIfExists('precincts');
     }
 };

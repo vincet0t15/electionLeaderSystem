@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PrecinctRequest\PrecinctStoreRequest;
+use App\Models\Precinct;
 use Illuminate\Http\Request;
 
 class PrecinctController extends Controller
@@ -25,9 +27,16 @@ class PrecinctController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PrecinctStoreRequest $request)
     {
-        return 1;
+        $precinct = new Precinct();
+        $precinct->precinct = $request->precinct;
+        $precinct->save();
+
+        return [
+            'message' => 'Successfully added',
+            'status' => 'success'
+        ];
     }
 
     /**

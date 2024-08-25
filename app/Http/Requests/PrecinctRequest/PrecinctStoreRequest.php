@@ -23,9 +23,9 @@ class PrecinctStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'precint' => [
+            'precinct' => [
                 'required',
-                Rule::unique('precints')->whereNull('deleted_at'),
+                Rule::unique('precincts')->whereNull('deleted_at'),
             ],
         ];
     }
