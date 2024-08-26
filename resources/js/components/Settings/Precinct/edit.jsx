@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Button,
     Dialog,
@@ -8,8 +8,33 @@ import {
     Typography,
     Input,
 } from "@material-tailwind/react";
+import { useMutation } from "@tanstack/react-query";
 
-export function PrecenctEdit({ isOpen, isClose, dataToEdit }) {
+export function PrecenctEdit({ isOpen, isClose }) {
+    const [formData, setFormData] = useState({
+        precinct: "",
+    });
+    const mutation = useMutation({
+        mutationFn: (newPrecinct) => {
+            console.log(newPrecinct);
+            // return axios.post("/api/precincts", newPrecinct);
+        },
+        onSuccess: () => {
+            isClose();
+        },
+        onError: (error) => {
+            // Handle error, e.g., showing an error message
+            console.error("Error creating precinct:", error);
+        },
+    });
+
+    const handleSubmit = () => {
+        mutation.mutate({ precinct: formData.precinct });
+    };
+
+    const handleInputChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
     return (
         <>
             <Dialog
@@ -24,15 +49,22 @@ export function PrecenctEdit({ isOpen, isClose, dataToEdit }) {
                             color="blue-gray"
                             className="uppercase text-gray-700 font-semibold tracking-widest"
                         >
-                            Edit Barangay
+                            Create Precinct
                         </Typography>
 
-                        <Input label="Barangay" color="teal" size="md" />
+                        <Input
+                            label="Precinct"
+                            color="teal"
+                            size="md"
+                            onChange={handleInputChange}
+                            name="precinct"
+                            value={formData.precinct}
+                        />
                     </CardBody>
                     <CardFooter className="pt-0">
                         <Button
                             color="teal"
-                            onClick={isClose}
+                            onClick={handleSubmit}
                             fullWidth
                             className="tracking-widest"
                         >
