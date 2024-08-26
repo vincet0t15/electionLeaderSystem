@@ -193,6 +193,7 @@ export default function PrecentIndex() {
             />
 
             <PrecenctEdit
+                dataToEdit={dataToEdit}
                 onSaved={getPrecinct}
                 isOpen={editDialog}
                 isClose={() => setEditDialog(false)}

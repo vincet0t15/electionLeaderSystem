@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Button,
     Dialog,
@@ -12,7 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 import apiClient from "../../../apiClient";
 import AlertMessage from "../../../Alert";
 
-export function PrecenctEdit({ isOpen, isClose, onSaved }) {
+export function PrecenctEdit({ isOpen, isClose, onSaved, dataToEdit }) {
     const [alertData, setAlertData] = useState({
         isShow: false,
         message: "",
@@ -20,13 +20,25 @@ export function PrecenctEdit({ isOpen, isClose, onSaved }) {
     });
 
     const [error, setError] = useState({});
+
     const [formData, setFormData] = useState({
+        id: "",
         precinct: "",
     });
 
+    useEffect(() => {
+        setFormData({
+            id: dataToEdit.id || "",
+            precinct: dataToEdit.precinct || "",
+        });
+    }, [dataToEdit]);
+
     const mutation = useMutation({
-        mutationFn: (newPrecinct) => {
-            return apiClient.post("precinct", newPrecinct);
+        mutationFn: (updatedPrecinct) => {
+            return apiClient.patch(
+                "precinct/" + updatedPrecinct.id,
+                updatedPrecinct
+            );
         },
         onSuccess: ({ data }) => {
             setFormData({
@@ -79,8 +91,8 @@ export function PrecenctEdit({ isOpen, isClose, onSaved }) {
 
                             <Input
                                 error={error.precinct ? true : false}
-                                value={formData.precinct}
                                 name="precinct"
+                                value={formData.precinct}
                                 onChange={handleInputChange}
                                 label="Precinct"
                                 color="teal"

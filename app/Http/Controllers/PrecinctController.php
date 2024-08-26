@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PrecinctRequest\PrecinctStoreRequest;
+use App\Http\Requests\PrecinctRequest\PrecinctUpdateRequest;
 use App\Models\Precinct;
 use Illuminate\Http\Request;
 
@@ -63,9 +64,16 @@ class PrecinctController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(PrecinctUpdateRequest $request, Precinct $precinct)
     {
-        //
+        $precinct = Precinct::find($precinct->id);
+        $precinct->precinct = $request->precinct;
+        $precinct->save();
+
+        return [
+            'message' => 'Successfully updated',
+            'status' => 'success'
+        ];
     }
 
     /**
