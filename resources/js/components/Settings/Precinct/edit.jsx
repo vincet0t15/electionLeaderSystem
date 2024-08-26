@@ -46,7 +46,7 @@ export function PrecenctEdit({ isOpen, isClose, onSaved }) {
     });
 
     const handleSubmit = () => {
-        mutation.mutate({ precinct: formData.precinct });
+        mutation.mutate(formData);
     };
 
     const handleInputChange = (e) => {
