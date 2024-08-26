@@ -86,7 +86,7 @@ export function PrecenctEdit({ isOpen, isClose, onSaved, dataToEdit }) {
                                 color="blue-gray"
                                 className="mb-4 uppercase text-gray-700 font-semibold tracking-widest"
                             >
-                                Create Precinct
+                                Edit Precinct
                             </Typography>
 
                             <Input
@@ -105,12 +105,13 @@ export function PrecenctEdit({ isOpen, isClose, onSaved, dataToEdit }) {
                     </CardBody>
                     <CardFooter className="pt-0">
                         <Button
+                            loading={mutation.isPending}
                             color="teal"
                             onClick={handleSubmit}
                             fullWidth
-                            className="tracking-widest"
+                            className="tracking-widest justify-center items-center"
                         >
-                            Create
+                            save changes
                         </Button>
                     </CardFooter>
                 </Card>

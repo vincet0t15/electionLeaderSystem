@@ -97,7 +97,7 @@ export function PrecenctCreate({ isOpen, isClose, onSaved }) {
                             color="teal"
                             onClick={handleSubmit}
                             fullWidth
-                            className="tracking-widest"
+                            className="tracking-widest justify-center items-center"
                         >
                             Create
                         </Button>
