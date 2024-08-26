@@ -49,7 +49,6 @@ export default function PrecentIndex() {
 
     const getPrecinct = () => {
         queryClient.invalidateQueries(["dataList", { selectedPage, search }]);
-        setCreateDialog(false);
     };
 
     const handleEditData = (data) => {
@@ -194,6 +193,7 @@ export default function PrecentIndex() {
             />
 
             <PrecenctEdit
+                onSaved={getPrecinct}
                 isOpen={editDialog}
                 isClose={() => setEditDialog(false)}
             />

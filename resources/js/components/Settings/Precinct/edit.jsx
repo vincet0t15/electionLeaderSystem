@@ -9,22 +9,36 @@ import {
     Input,
 } from "@material-tailwind/react";
 import { useMutation } from "@tanstack/react-query";
+import apiClient from "../../../apiClient";
+import AlertMessage from "../../../Alert";
 
-export function PrecenctEdit({ isOpen, isClose }) {
+export function PrecenctEdit({ isOpen, isClose, onSaved }) {
+    const [alertData, setAlertData] = useState({
+        isShow: false,
+        message: "",
+        status: "",
+    });
+
+    const [error, setError] = useState({});
     const [formData, setFormData] = useState({
         precinct: "",
     });
     const mutation = useMutation({
         mutationFn: (newPrecinct) => {
-            console.log(newPrecinct);
-            // return axios.post("/api/precincts", newPrecinct);
+            return apiClient.post("precinct", newPrecinct);
         },
-        onSuccess: () => {
+        onSuccess: (data) => {
+            console.log(data);
+            setAlertData({
+                isShow: true,
+                message: data.message,
+                status: data.status,
+            });
+            onSaved();
             isClose();
         },
         onError: (error) => {
-            // Handle error, e.g., showing an error message
-            console.error("Error creating precinct:", error);
+            setError(error.response.data.errors);
         },
     });
 
@@ -37,6 +51,12 @@ export function PrecenctEdit({ isOpen, isClose }) {
     };
     return (
         <>
+            <AlertMessage
+                alertData={alertData}
+                isClose={() =>
+                    setAlertData({ isShow: false, message: "", status: "" })
+                }
+            />
             <Dialog
                 size="xs"
                 open={isOpen}
@@ -45,21 +65,27 @@ export function PrecenctEdit({ isOpen, isClose }) {
             >
                 <Card className="mx-auto w-full max-w-[24rem]">
                     <CardBody className="flex flex-col gap-4">
-                        <Typography
-                            color="blue-gray"
-                            className="uppercase text-gray-700 font-semibold tracking-widest"
-                        >
-                            Create Precinct
-                        </Typography>
+                        <div>
+                            <Typography
+                                color="blue-gray"
+                                className="mb-4 uppercase text-gray-700 font-semibold tracking-widest"
+                            >
+                                Create Precinct
+                            </Typography>
 
-                        <Input
-                            label="Precinct"
-                            color="teal"
-                            size="md"
-                            onChange={handleInputChange}
-                            name="precinct"
-                            value={formData.precinct}
-                        />
+                            <Input
+                                error={error.precinct ? true : false}
+                                value={formData.precinct}
+                                name="precinct"
+                                onChange={handleInputChange}
+                                label="Precinct"
+                                color="teal"
+                                size="md"
+                            />
+                            <span className="text-red-500 tracking-wide text-sm">
+                                {error.precinct}
+                            </span>
+                        </div>
                     </CardBody>
                     <CardFooter className="pt-0">
                         <Button
