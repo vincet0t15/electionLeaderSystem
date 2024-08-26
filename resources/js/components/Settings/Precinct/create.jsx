@@ -8,45 +8,51 @@ import {
     Typography,
     Input,
 } from "@material-tailwind/react";
+import { useMutation } from "@tanstack/react-query";
 import apiClient from "../../../apiClient";
 import AlertMessage from "../../../Alert";
 
 export function PrecenctCreate({ isOpen, isClose, onSaved }) {
-    const [error, setError] = useState({});
-    const [formData, setFormData] = useState({
-        precinct: "",
-    });
-    const [loading, setLoading] = useState(false);
     const [alertData, setAlertData] = useState({
         isShow: false,
         message: "",
         status: "",
     });
 
-    const storePrecinct = async () => {
-        setLoading(true);
-        try {
-            const response = await apiClient.post("precinct", formData);
-            onSaved();
-            setAlertData({
-                isShow: true,
-                message: response.data.message,
-                status: response.data.status,
-            });
+    const [error, setError] = useState({});
+    const [formData, setFormData] = useState({
+        precinct: "",
+    });
+
+    const mutation = useMutation({
+        mutationFn: (newPrecinct) => {
+            return apiClient.post("precinct", newPrecinct);
+        },
+        onSuccess: ({ data }) => {
             setFormData({
                 precinct: "",
             });
-            setLoading(false);
+            setAlertData({
+                isShow: true,
+                message: data.message,
+                status: data.status,
+            });
+            onSaved();
             isClose();
-        } catch (error) {
-            setLoading(false);
+        },
+        onError: (error) => {
             setError(error.response.data.errors);
-        }
+        },
+    });
+
+    const handleSubmit = () => {
+        mutation.mutate(formData);
     };
 
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
+
     return (
         <>
             <AlertMessage
@@ -88,7 +94,7 @@ export function PrecenctCreate({ isOpen, isClose, onSaved }) {
                     <CardFooter className="pt-0">
                         <Button
                             color="teal"
-                            onClick={storePrecinct}
+                            onClick={handleSubmit}
                             fullWidth
                             className="tracking-widest"
                         >

@@ -52,6 +52,7 @@ export function PrecenctEdit({ isOpen, isClose, onSaved }) {
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
+
     return (
         <>
             <AlertMessage
