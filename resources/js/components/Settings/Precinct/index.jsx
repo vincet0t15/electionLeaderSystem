@@ -6,8 +6,11 @@ import { Spinner } from "@material-tailwind/react";
 import moment from "moment";
 import PaginatedItems from "../../Pagination/Pagination";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { PrecenctEdit } from "./edit";
 export default function PrecentIndex() {
     const [createDialog, setCreateDialog] = useState(false);
+    const [editDialog, setEditDialog] = useState(false);
+    const [dataToEdit, setDataToEdit] = useState({});
     const queryClient = useQueryClient();
 
     // pagination
@@ -47,6 +50,11 @@ export default function PrecentIndex() {
     const getPrecinct = () => {
         queryClient.invalidateQueries(["dataList", { selectedPage, search }]);
         setCreateDialog(false);
+    };
+
+    const handleEditData = (data) => {
+        setDataToEdit(data);
+        setEditDialog(true);
     };
     return (
         <div>
@@ -150,7 +158,12 @@ export default function PrecentIndex() {
                                             </span>
                                         </td>
                                         <td className="flex py-2 px-4 border-b border-b-gray-50">
-                                            <span className="hover:cursor-pointer text-teal-500 inline-block p-1 tracking-wide rounded bg-emerald-500/10 text-emerald-500 font-medium text-[13px] leading-none">
+                                            <span
+                                                onClick={() =>
+                                                    handleEditData(data)
+                                                }
+                                                className="hover:cursor-pointer text-teal-500 inline-block p-1 tracking-wide rounded bg-emerald-500/10 text-emerald-500 font-medium text-[13px] leading-none"
+                                            >
                                                 Edit
                                             </span>
                                             <span className="hover:cursor-pointer text-red-500 inline-block p-1 rounded bg-emerald-500/10 text-emerald-500 font-medium text-[13px] leading-none">
@@ -178,6 +191,11 @@ export default function PrecentIndex() {
                 onSaved={getPrecinct}
                 isOpen={createDialog}
                 isClose={() => setCreateDialog(false)}
+            />
+
+            <PrecenctEdit
+                isOpen={editDialog}
+                isClose={() => setEditDialog(false)}
             />
         </div>
     );
