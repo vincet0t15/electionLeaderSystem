@@ -26,7 +26,6 @@ export default function PrecentIndex() {
     const [searchTerm, setSearchTerm] = useState("");
 
     const { data: dataList, isLoading } = useQuery({
-        queryKey: ["dataList", { selectedPage, search }],
         queryFn: async () => {
             const response = await apiClient.get(
                 "precinct?search=" + search + "&page=" + selectedPage
@@ -38,6 +37,8 @@ export default function PrecentIndex() {
             });
             return response.data;
         },
+
+        queryKey: ["dataList", { selectedPage, search }],
     });
 
     const handleSearchKeyDown = (e) => {
