@@ -23,12 +23,15 @@ export function PrecenctEdit({ isOpen, isClose, onSaved }) {
     const [formData, setFormData] = useState({
         precinct: "",
     });
+
     const mutation = useMutation({
         mutationFn: (newPrecinct) => {
             return apiClient.post("precinct", newPrecinct);
         },
-        onSuccess: (data) => {
-            console.log(data);
+        onSuccess: ({ data }) => {
+            setFormData({
+                precinct: "",
+            });
             setAlertData({
                 isShow: true,
                 message: data.message,
