@@ -93,6 +93,7 @@ export function PrecenctCreate({ isOpen, isClose, onSaved }) {
                     </CardBody>
                     <CardFooter className="pt-0">
                         <Button
+                            loading={mutation.isPending}
                             color="teal"
                             onClick={handleSubmit}
                             fullWidth
