@@ -5,7 +5,7 @@ import apiClient from "../../../apiClient";
 import { Spinner } from "@material-tailwind/react";
 import moment from "moment";
 import PaginatedItems from "../../Pagination/Pagination";
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 export default function PrecentIndex() {
     const [createDialog, setCreateDialog] = useState(false);
     const queryClient = useQueryClient();
